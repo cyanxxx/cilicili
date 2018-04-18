@@ -1,0 +1,26 @@
+$bgColor : #32323a;
+*{
+  box-sizing: border-box;
+}
+body{
+  background: $bgColor;
+
+}
+ul{
+  list-style: none;
+}
+.clearFix:after{
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+a{
+  text-decoration: none;
+  color:#fff;
+}
+h2{
+  color:#1fb5ad;
+}
