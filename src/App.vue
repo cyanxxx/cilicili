@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <banner></banner>
     <div class="container">
       <!-- 导航区 -->
       <ul class="nav">
@@ -14,8 +15,12 @@
 </template>
 
 <script>
+import Banner from './components/Banner.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    Banner
+  }
 }
 </script>
 <style lang="scss">

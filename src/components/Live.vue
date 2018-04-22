@@ -1,9 +1,9 @@
 <template>
   <div>
     <slot></slot>
-    <div class="box clearFix">
+    <div class="box clearFix" ref="box" @mousewheel="scrollNext">
       <div class="scroll-bar">
-        <div class="scroll"  ref="scroll" @mousemove="move" @mousedown="press" @mouseup="relase"></div>
+        <div class="scroll"  ref="scroll" @mousemove="move" @mousedown="press" @mouseup="relase" ></div>
       </div>
       <div class="list" ref="list">
         <a class="item" v-for = "(item,index) in lists">
@@ -56,12 +56,36 @@
           }
           else if(this.$refs.scroll.offsetTop>378){
             this.$refs.scroll.style.top = '378px';
-              this.$refs.list.style.top = '-689px';
+            this.$refs.list.style.top = '-689px';
           }
 
 
         }
 
+      },
+      scrollNext(e){
+
+        if(e.clientX<this.$refs.box.getBoundingClientRect().left|| e.clientX>this.$refs.box.getBoundingClientRect().righ|| e.clientY<this.$refs.box.getBoundingClientRect().top||
+        e.clientY>this.$refs.box.getBoundingClientRect().bottom)return;
+        let dis = 10;
+        console.log(e.wheelDelta);
+        if(e.wheelDelta>=0){
+          this.$refs.scroll.style.top = this.$refs.scroll.offsetTop - dis + 'px';
+          this.$refs.list.style.top = this.$refs.list.offsetTop + dis*2 + 'px';
+        }
+        else{
+          this.$refs.scroll.style.top = this.$refs.scroll.offsetTop + dis + 'px';
+          this.$refs.list.style.top = this.$refs.list.offsetTop - dis*2 + 'px';
+        }
+        if(this.$refs.scroll.offsetTop <0){
+          this.$refs.scroll.style.top = '0px';
+          this.$refs.list.style.top = '0px';
+        }
+        else if(this.$refs.scroll.offsetTop>378){
+          this.$refs.scroll.style.top = '378px';
+          this.$refs.list.style.top = '-689px';
+        }
+        e.preventDefault();
       },
       relase(e) {
         if(this.inBar){
