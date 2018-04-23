@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <banner></banner>
+    <banner class="view"></banner>
     <div class="container">
       <!-- 导航区 -->
       <ul class="nav">
@@ -20,10 +20,17 @@ export default {
   name: 'App',
   components:{
     Banner
+  },
+  created(){
+    window.localStorage.setItem('height',document.documentElement.clientHeight);
+    window.localStorage.setItem('width',document.documentElement.clientWidth);
   }
 }
 </script>
 <style lang="scss">
+html,body,#app{
+  height: 100%;
+}
 .container{
   width: 1160px;
   margin: auto;
