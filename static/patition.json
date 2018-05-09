@@ -1,0 +1,8 @@
+[
+  {"id":"1","title":"动画","img_url":"animate.png"},
+  {"id":"2","title":"电影","img_url":"movie.png"},
+  {"id":"3","title":"生活","img_url":"life.png"},
+  {"id":"4","title":"游戏","img_url":"game.png"},
+  {"id":"5","title":"科技","img_url":"science.png"},
+  {"id":"6","title":"电视剧","img_url":"series.png"}
+]

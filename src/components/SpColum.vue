@@ -1,78 +1,63 @@
 <template>
   <div>
     <slot></slot>
-    <div class="list clearFix" v-for="list in lists">
-      <div class="l-date">
-        <p>{{ list.date | formatDay}}</p>
-        <p>{{ list.date | formatMonth}}</p>
+    <router-link :to="{ name: 'Articles', params: {id:list.id} }" class="list clearFix" v-for="list in lists" :key="list.id">
+      <div class="l-type">
+        <span>{{ list.category.name }}</span>
       </div>
       <div class="r-text">
         {{ list.title }}
       </div>
-    </div>
+    </router-link>
+    <router-link :to="{ name: 'SpColums'}" tag="div" class="more">
+        more<i class="iconfont icon-iconfontjiantou2"></i>
+    </router-link>
+
   </div>
 </template>
 <script>
-  export default  {
-    data () {
-      return {
-        lists:[
-          {date:"2018/11/25",title:"【日漫评论室】【冲上1000集】《工藤新一 迷之墙和黑色拉布犬事件》——《柯南》特典"},
-          {date:"2018/11/25",title:"【日漫评论室】【冲上1000集】《工藤新一 迷之墙和黑色拉布犬事件》——《柯南》特典"},
-          {date:"2018/11/25",title:"【日漫评论室】【冲上1000集】《工藤新一 迷之墙和黑色拉布犬事件》——《柯南》特典"},
-          {date:"2018/11/25",title:"【日漫评论室】【冲上1000集】《工藤新一 迷之墙和黑色拉布犬事件》——《柯南》特典"}
-
-        ]
-      }
-    },
-    filters: {
-      formatDay: function(val) {
-        let arr = val.split('/');
-        return  arr[arr.length-1];
-      },
-      formatMonth (val) {
-        let arr = val.split('/');
-        let month =  arr[arr.length-2];
-        switch(month){
-          case '1':return 'Jan';
-          case '2':return 'Feb';
-          case '3':return 'Mar';
-          case '4':return 'Apr';
-          case '5':return 'May';
-          case '6':return 'Jun';
-          case '7':return 'Jul';
-          case '8':return 'Aug';
-          case '9':return 'Sep';
-          case '10':return 'Oct';
-          case '11':return 'Nov';
-          case '12':return 'Dec';
-        }
-      },
-    }
-  }
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  computed:mapGetters({
+      lists: 'preSpItem'
+  }),
+}
 </script>
+
 <style  scoped lang="scss">
   $bgColor : #1fb5ad;
+  @mixin dot($width) {
+    width: $width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+  }
+  @mixin to-drak {
+    animation: all .2s ease-in;
+    &:hover{
+      background: #1ca099;
+    }
+  }
+  $height:88px;
   .list{
     color: #fff;
     margin-bottom: 42px;
-    >.l-date{
+    display: block;
+    >.l-type{
       float: left;
       background:  $bgColor;
       width: 18%;
-      height: 88px;
-      padding: 0 25px;
-      box-sizing: border-box;
+      line-height: $height;
       text-align: center;
+      @include to-drak;
     }
     >.r-text{
       float: right;
-      width: 70%;
       background:  $bgColor;
-      height: 88px;
-      box-sizing: border-box;
-      padding: 20px;
-      overflow: hidden;
+      line-height: $height;
+      padding: 0 10px;
+      @include dot(75%);
+      @include to-drak;
     }
 }
 

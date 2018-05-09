@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '../Main.vue'
-import SpColums from '../SpColums.vue'
-import Patitons from '../Patitions.vue'
-import LiveRooms from '../LiveRooms.vue'
-import Videos from '../Videos.vue'
+import Main from '../view/Main.vue'
+import SpColums from '../view/SpColums.vue'
+import Patitons from '../view/Patitions.vue'
+import LiveRooms from '../view/LiveRooms.vue'
+import Videos from '../view/Videos.vue'
+import LiveVideos from '../view/LiveVideos.vue'
+import Articles from '../view/Articles.vue'
+
 
 Vue.use(Router)
 
@@ -16,9 +19,19 @@ export default new Router({
       component: Main,
     },
     {
-      path: 'video/:id',
-      name: 'Videos',
-      component: Videos
+      path: '/video/:id',
+      name: 'video',
+      component: Videos,
+    },
+    {
+      path: '/live-video/:id',
+      name: 'LiveVideos',
+      component: LiveVideos
+    },
+    {
+      path: '/articles/:id',
+      name: 'Articles',
+      component: Articles
     },
     {
       path: '/patitons',
@@ -35,5 +48,6 @@ export default new Router({
       name: 'LiveRooms',
       component: LiveRooms
     }
-  ]
+  ],
+  linkActiveClass:"active",
 })

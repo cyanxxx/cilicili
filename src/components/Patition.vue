@@ -4,36 +4,29 @@
     <div class="menu clearFix">
       <div class="list" v-for = "list in menuList">
         <a href="list.link">
-          <img :src="list.img_url" alt="">
+          <img v-lazy="list.img_url" alt="list.title" >
         </a>
         <div class="text">
           <a href="list.link">
             {{ list.title }}
           </a>
         </div>
-
       </div>
     </div>
+    <router-link :to="{ name: 'Patitons'}" tag="div" class="more">
+        more<i class="iconfont icon-iconfontjiantou2"></i>
+    </router-link>
   </div>
 
 </template>
 <script>
   export default{
-    data () {
-      return{
-        menuList:[
-          {link:'',title:'动画',img_url:'../../static/pic/patition/animate.png'},
-          {link:'',title:'电影',img_url:'../../static/pic/patition/movie.png'},
-          {link:'',title:'生活',img_url:'../../static/pic/patition/life.png'},
-          {link:'',title:'游戏',img_url:'../../static/pic/patition/game.png'},
-          {link:'',title:'科技',img_url:'../../static/pic/patition/science.png'},
-          {link:'',title:'电视剧',img_url:'../../static/pic/patition/series.png'}
-        ]
-      }
+    props:{
+      menuList:Array
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .menu{
     margin-right: -110px;
     overflow:hidden;
@@ -41,9 +34,14 @@
       float: left;
       margin-right: 110px;
       margin-bottom: 50px;
+      >a{display: block;}
       img{
         width: 310px;
         height: 174px;
+      }
+      >.text{
+        padding: 16px 0;
+        font-weight: bold;
       }
     }
   }

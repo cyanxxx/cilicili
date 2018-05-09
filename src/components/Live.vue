@@ -1,89 +1,89 @@
 <template>
   <div>
     <slot></slot>
-    <div class="box clearFix" ref="box" @mousewheel="scrollNext">
+    <div class="box clearFix" :style="{'top':0}"ref="box" @wheel="scrollNext">
       <div class="scroll-bar">
         <div class="scroll"  ref="scroll" @mousemove="move" @mousedown="press" @mouseup="relase" ></div>
       </div>
       <div class="list" ref="list">
-        <a class="item" v-for = "(item,index) in lists">
-          <span>top{{index+1}}</span>
-          <span>{{item.title}}</span>
-        </a>
+        <router-link :to="{ name: 'LiveVideos', params: {id:item.roomid} }" :key= "item.roomid" class="item clearFix" v-for = "(item,index) in lists">
+          <span class="tag">TOP{{index+1}}</span>
+          <span class="title">{{ item.title }}</span>
+          <span class="author">by:{{ item.uname }}</span>
+        </router-link>
       </div>
-
     </div>
+    <router-link :to="{ name: 'LiveRooms'}" tag="div" class="more">
+        more<i class="iconfont icon-iconfontjiantou2"></i>
+    </router-link>
   </div>
 
 
 </template>
 <script>
+import { mapGetters } from 'vuex'
   export default {
     data () {
       return {
         lastPos:0,
-        inBar: false,
-        lists:[
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'},
-          {id:'',title:'关注团团，带你走近华服世界！'}
-        ]
+        inBar: false
       }
     },
+    computed:mapGetters({lists:'liveItem'}),
     methods:{
       press(e) {
+        //记录当前的位置
         this.lastPos = e.clientY;
         this.inBar = true;
+        //其他元素不可被选中
         document.body.classList.add("unselectable");
       },
       move(e) {
+        //鼠标按下并移动(不断触发)
         if(this.inBar){
           let distance = e.clientY - this.lastPos;
-          let dis = distance * 689/378;
+          //console.log(e.clientY );
+          //按比例放大到实际移动的距离
+          //滑块80px
+          //总长474px，有效距离474-80=394px
+          //内容115*10 = 1150px
+          //每次显示4个
+          let dis = distance * 676/394;
           this.lastPos = e.clientY;
-          this.$refs.scroll.style.top = distance + this.$refs.scroll.offsetTop+'px';
-          this.$refs.list.style.top = -dis+this.$refs.list.offsetTop+'px';
-          if(this.$refs.scroll.offsetTop <0){
+          this.$refs.scroll.style.top = distance + parseFloat(this.$refs.scroll.style.top)+'px';
+          //console.log(this.$refs.scroll.style.top)
+          this.$refs.list.style.top = -dis+parseFloat(this.$refs.list.style.top)+'px';
+          if(this.$refs.scroll.offsetTop <=0){
             this.$refs.scroll.style.top = '0px';
             this.$refs.list.style.top = '0px';
           }
-          else if(this.$refs.scroll.offsetTop>378){
-            this.$refs.scroll.style.top = '378px';
-            this.$refs.list.style.top = '-689px';
+          else if(this.$refs.scroll.offsetTop>=394){
+            this.$refs.scroll.style.top = '394px';
+            this.$refs.list.style.top = '-676px';
           }
-
-
         }
-
       },
       scrollNext(e){
-
         if(e.clientX<this.$refs.box.getBoundingClientRect().left|| e.clientX>this.$refs.box.getBoundingClientRect().righ|| e.clientY<this.$refs.box.getBoundingClientRect().top||
         e.clientY>this.$refs.box.getBoundingClientRect().bottom)return;
         let dis = 10;
-        console.log(e.wheelDelta);
-        if(e.wheelDelta>=0){
-          this.$refs.scroll.style.top = this.$refs.scroll.offsetTop - dis + 'px';
-          this.$refs.list.style.top = this.$refs.list.offsetTop + dis*2 + 'px';
+        let ldis = 10* 676/394;
+        var wheel = e.wheelDelta?e.wheelDelta:-e.deltaY;
+        if(wheel>=0){
+          this.$refs.scroll.style.top = parseFloat(this.$refs.scroll.style.top) - dis + 'px';
+          this.$refs.list.style.top =  parseFloat(this.$refs.list.style.top) + ldis + 'px';
         }
         else{
-          this.$refs.scroll.style.top = this.$refs.scroll.offsetTop + dis + 'px';
-          this.$refs.list.style.top = this.$refs.list.offsetTop - dis*2 + 'px';
+          this.$refs.scroll.style.top = parseFloat(this.$refs.scroll.style.top) + dis + 'px';
+          this.$refs.list.style.top = parseFloat(this.$refs.list.style.top) - ldis + 'px';
         }
-        if(this.$refs.scroll.offsetTop <0){
+        if(this.$refs.scroll.offsetTop <=0){
           this.$refs.scroll.style.top = '0px';
           this.$refs.list.style.top = '0px';
         }
-        else if(this.$refs.scroll.offsetTop>378){
-          this.$refs.scroll.style.top = '378px';
-          this.$refs.list.style.top = '-689px';
+        else if(this.$refs.scroll.offsetTop>=394){
+          this.$refs.scroll.style.top = '394px';
+          this.$refs.list.style.top = '-676px';
         }
         e.preventDefault();
       },
@@ -92,12 +92,17 @@
           this.inBar = false;
           document.body.classList.remove("unselectable");
         }
-
       }
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+$color:#1fb5ad;
+@mixin leftTop {
+  position: absolute;
+  top:0;
+  left: 0;
+}
   .unselectable {
     /*当前版本的火狐（53）和Edge（15）不支持user-select标准属性，需要使用浏览器厂商前缀*/
     -moz-user-select: none;
@@ -105,39 +110,66 @@
     user-select: none;
   }
   .box{
-    border: 2px solid #1fb5ad;
+    border: 2px solid $color;
     width: 100%;
     height:478px;
     overflow: hidden;
     position: relative;
+    margin-bottom: 42px;
     >.scroll-bar{
       float: right;
       width: 25px;
       height: 100%;
-      border-left: 2px solid #1fb5ad;
+      border-left: 2px solid $color;
       position: relative;
       >.scroll{
-        position: absolute;
+        @include leftTop;
         width: 100%;
         height: 80px;
-        background: #1fb5ad;
-        top:0;
-        left: 0;
+        background: $color;
       }
     }
     >.list{
-      float: left;
       width: calc( 100% - 25px );
-      position: absolute;
-      top:0;
-      left: 0;
+      @include leftTop;
+      color:$color;
+      .item{
+        transition: all .2s ease-in;
+        &:hover{
+          background: $color;
+          color:#fff;
+        }
+      }
+      .tag{
+        font-size: 32px;
+        margin-right: 7px;
+        display: inline-block;
+        vertical-align: top;
+      }
+      .title{
+        display: inline-block;
+        margin-right: 7px;
+        overflow: hidden;
+        width: 220px;
+        text-overflow: ellipsis;
+        white-space:nowrap;
+
+      }
+      .author{
+        position: absolute;
+        top:50%;
+        right:7px;
+        transform: translate(0,-50%);
+      }
       >a{
         width: 100%;
         display: block;
-        border-bottom: 2px solid #1fb5ad;
+        border-bottom: 2px solid $color;
         height:115px;
         line-height: 115px;
         padding-left: 16px;
+        color:$color;
+        position: relative;
       }
     }
   }
