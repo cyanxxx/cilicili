@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return{
-      logo: {url: '',text: 'CLICILI'},
+      logo: {url: '',text: 'CILICILI'},
       visible:  false,
       status: true,
     }
