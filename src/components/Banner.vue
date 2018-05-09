@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="logo" ref="logo">
-      <div class="text" :class="{blink:status}">CLICILI</div>
+      <div class="text" :class="{blink:status}">{{text}}</div>
     </div>
     <div class="img_box">
       <img  ref="img" :src="img.url" :height="height" :class="{'twoCols':Math.floor(index/2)==0,'threeCols':Math.floor(index/2)>0}" :index = "index" alt="img.id" v-for=" (img,index) in bannerImg">
@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return{
-      logo: {url: '',text: 'CILICILI'},
+      text: 'CILICILI',
       visible:  false,
       status: true,
     }
