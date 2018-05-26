@@ -1,5 +1,4 @@
 <!-- borrowed from Nuxt! -->
-
 <template>
   <div class="progress" :style="{
     'width': percent+'%',
@@ -11,7 +10,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       percent: 0,
       show: false,
@@ -23,7 +22,7 @@ export default {
     }
   },
   methods: {
-    start () {
+    start() {
       this.show = true
       this.canSuccess = true
       if (this._timer) {

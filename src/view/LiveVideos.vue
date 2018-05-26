@@ -17,16 +17,16 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return{
-      author:'pigff',
-      title:'【PIGFF】3点了,娱乐',
-      msg:''
+      author: 'pigff',
+      title: '【PIGFF】3点了,娱乐',
+      msg: ''
     }
   },
-  methods:{
-    send () {
-      this.msg="";
+  methods: {
+    send() {
+      this.msg = "";
     }
   }
 }

@@ -22,15 +22,14 @@ export default {
     ...mapGetters({ totalPages:'pages'}),
     pages : function () {
       var p = [];
-      if(this.current<=this.showPages){
+      if (this.current <= this.showPages){
         //总共页数和想显示的页数比较
-        if(this.showPages<this.totalPages){
+        if (this.showPages < this.totalPages){
           this.more = true;
         }
         let i = Math.min(this.showPages,this.totalPages);
-        while(i){p.unshift(i--)};
-      }
-      else{
+        while (i) {p.unshift(i--)};
+      } else {
         this.more = true;
         let end = this.current;
         let i = this.showPages;
@@ -44,8 +43,8 @@ export default {
       return p;
     }
   },
-  methods:{
-    show: function(index){
+  methods: {
+    show: function(index) {
       if(index == this.current) return;
            this.current = index;
            //这里可以发送ajax请求

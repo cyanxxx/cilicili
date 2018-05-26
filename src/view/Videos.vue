@@ -9,14 +9,15 @@
 import VideoWrapper from '../components/VideoWrapper'
 import Comment from '../components/Comment'
 export default {
-  data(){
+  data() {
     return{
     }
   },
-  components:{
-    VideoWrapper,Comment
+  components: {
+    VideoWrapper,
+    Comment
   },
-  created () {
+  created() {
     this.$store.dispatch('getComments',{page:1});
   }
 }

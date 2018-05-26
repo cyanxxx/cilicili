@@ -1,14 +1,17 @@
 <template>
   <div>
+
     <!-- 分区 -->
     <patition :menuList="patitionImgData">
       <h2>分区</h2>
     </patition>
     <div class="clearFix">
+
       <!-- 专栏 -->
       <sp-colum class="col-5 spcol">
         <h2>专栏</h2>
       </sp-colum>
+      
       <!-- 直播 -->
       <live class="col-5 live" :lists="liveData">
         <h2>直播</h2>

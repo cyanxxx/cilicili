@@ -12,7 +12,7 @@ import faker from "../../static/faker"
 export default {
   data () {
     return{
-      content:''
+      content: ''
     }
   },
   created () {

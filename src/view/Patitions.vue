@@ -17,27 +17,27 @@ import GroupVideos from '../components/GroupVideos.vue'
 import BackTop from '../components/BackTop.vue'
 import { mapGetters } from 'vuex'
 export default {
-  data () {
+  data() {
     return{
        laest : '最新更新',
     }
 
   },
-  computed:mapGetters({
-    areaVideos:"lists"
+  computed: mapGetters({
+    areaVideos: "lists"
   }),
-  components:{
+  components: {
     GroupVideos,BackTop
   },
-  created () {
+  created() {
     this.$bar.start();
     this.$store.dispatch('getVideos')
   },
   methods:{
-    toTop(){
-      if(document.documentElement.scrollTop){
+    toTop() {
+      if (document.documentElement.scrollTop) {
         document.documentElement.scrollTop = 0;
-      }else{
+      } else {
         document.body.scrollTop= 0;
       }
     }

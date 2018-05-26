@@ -16,8 +16,8 @@
 
 <script>
 export default {
-  props:['videos'],
-  created(){
+  props: ['videos'],
+  created() {
     this.$bar.finish();
   },
 }

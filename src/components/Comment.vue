@@ -15,8 +15,8 @@
           <a>{{ list.userName }}</a>
           <div class="text">{{ list.content }}</div>
           <div class="subicon">
-            <i class="icon dianzan " @click="toGood(list.pid,index)" :class="{active:goodList[list.pid]}"></i>
-            <span>{{list.goods}}</span>
+            <i class="icon dianzan " @click="toGood(list.pid,index)" :class="{active: goodList[list.pid]}"></i>
+            <span>{{ list.goods }}</span>
             <i class="icon huifu" @click="reply(list.userName)"></i>
             <span>回复</span>
           </div>
@@ -24,44 +24,74 @@
       </div>
       <pages></pages>
     </div>
+    <modal v-if="needLogin && open" :top='top'></modal>
   </div>
 
 </template>
 
 <script>
 import Pages from './Pages.vue'
-import { mapGetters } from 'vuex'
+import Modal from './Modal.vue'
+import { saveVideoId } from '../utils/localStore'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
-  data(){
-    return{
-      goodList:{},
-      content:''
+  data() {
+    return {
+      goodList: {},
+      content: '',
+      top:0
     }
   },
-  components:{Pages},
-  computed:{
-    ...mapGetters({lists:'comments'}),
+  components: {Pages,Modal},
+  computed: {
+    ...mapGetters({lists:'comments',open:'open',needLogin:'needLogin',login:'login',token:'token',videoId:'videoId',userName:'userName',userImg:'userImg'}),
   },
-  methods:{
+  mounted() {
+    if(this.login){
+        this.getUser();
+    }
+  },
+  watch:{
+    login:function(val){
+      if(val){
+        this.getUser();
+      }
+    }
+  },
+  methods: {
+    ...mapMutations(['openModal','setVideoId']),
+    ...mapActions(['getUser']),
     send () {
-      let message = {};
-      message.userName = '123456';
-      message.content = this.content;
-      message.faceImg = window.localStorage.getItem('userImg');
-      message.goods = 0;
-      this.$store.dispatch('postComments',message);
-      this.content='';
+      if(this.login){
+        let message = {};
+        message.userName = this.userName;
+        message.content = this.content;
+        message.goods = 0;
+        message.faceImg = this.userImg;
+        this.$store.dispatch('postComments',message);
+        this.content='';
+      }else{
+        this.setTop();
+        this.openModal();
+        var id =  this.$route.params.id;
+        saveVideoId(id);
+      }
     },
-    toGood(pid,index){
-        if(this.goodList[pid]){
+    toGood(pid, index) {
+        if (this.goodList[pid]){
           this.lists[index].goods--;
-        }else{
+        } else {
           this.lists[index].goods++;
         }
         this.$set(this.goodList,pid,!this.goodList[pid]);
     },
-    reply(name){
+    reply(name) {
       this.content = '回复'+name+':';
+    },
+    setTop() {
+      var top = document.documentElement.scrollTop;
+      var height = document.documentElement.clientHeight;
+      this.top = top + height / 2;
     }
   }
 }

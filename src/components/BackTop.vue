@@ -6,12 +6,12 @@
 
 <script>
 export default {
-  methods:{
-    toTop(){
-      if(document.documentElement.scrollTop){
+  methods: {
+    toTop() {
+      if (document.documentElement.scrollTop){
         document.documentElement.scrollTop = 0;
-      }else{
-        document.body.scrollTop= 0;
+      } else {
+        document.body.scrollTop = 0;
       }
     }
   }

@@ -48,9 +48,9 @@ export default {
         x.onload = ()=> {
           loadedIndex++;
           this.$refs.progress.style.width = 16 + parseInt(this.$refs.progress.style.width)+'%';
-          if(loadedIndex==this.bannerImg.length){
+          if(loadedIndex == this.bannerImg.length){
             document.body.style.overflow = 'auto';
-            this.$refs.progress.style.width = 100+'%';
+            this.$refs.progress.style.width = 100 + '%';
             this.$refs.box.classList.add('fin');
             this.status = false;
           }
@@ -58,18 +58,10 @@ export default {
       })
     });
   },
-  methods:{
-    down(){
+  methods: {
+    down() {
       let height = window.localStorage.getItem('height');
-      console.log(height,document.documentElement.scrollTop);
-      // if(document.documentElement.scrollTop){
-      //   document.documentElement.scrollTop = height+'px';
-      //   console.log("jo")
-      // }else{
-      //   document.body.scrollTop= height+'px';
-      // }
       document.documentElement.scrollTop = height;
-        console.log(height,document.documentElement.scrollTop,document.body.scrollTop);
     }
   }
 }

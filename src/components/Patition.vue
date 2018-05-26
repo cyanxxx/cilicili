@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <router-link :to="{ name: 'Patitons'}" tag="div" class="more">
+    <router-link :to="{ name: 'patitons'}" tag="div" class="more">
         more<i class="iconfont icon-iconfontjiantou2"></i>
     </router-link>
   </div>
@@ -21,8 +21,8 @@
 </template>
 <script>
   export default{
-    props:{
-      menuList:Array
+    props: {
+      menuList: Array
     }
   }
 </script>

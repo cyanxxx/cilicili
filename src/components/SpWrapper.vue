@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="sp">
-    <router-link :to="{ name: 'Articles', params: {id:list.id} }" class="list clearFix" :class="{'active':index<start}" v-for="(list,index) in lists" :key="list.id" ref="item">
+    <router-link :to="{ name: 'articles', params: {id:list.id} }" class="list clearFix" :class="{'active':index<start}" v-for="(list,index) in lists" :key="list.id" ref="item">
       <div class="content">
         <h3 class="title">
           {{ list.title }}
@@ -19,31 +19,31 @@ import { mapGetters } from 'vuex'
 export default  {
   data () {
     return{
-      start:5
+      start: 5
     }
   },
-  computed:mapGetters({
+  computed: mapGetters({
     lists: 'comSpItem'
   }),
-  methods:{
-    addItem(){
+  methods: {
+    addItem() {
       this.start += 1;
     }
   },
   mounted () {
-    function throttle(method,context){
+    function throttle(method,context) {
       clearTimeout(method.tId);
       method.tId = setTimeout(function(){
           method.call(context);
       },200);
   }
     document.body.addEventListener("mousewheel", (e) => {
-      if(e.wheelDelta<0){
+      if (e.wheelDelta<0) {
         throttle(this.addItem);
       }
     });
     document.body.addEventListener("DOMMouseScroll", (e) => {
-      if(e.detail>0){
+      if (e.detail>0) {
         throttle(this.addItem);
       }
     });

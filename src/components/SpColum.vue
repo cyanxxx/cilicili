@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot></slot>
-    <router-link :to="{ name: 'Articles', params: {id:list.id} }" class="list clearFix" v-for="list in lists" :key="list.id">
+    <router-link :to="{ name: 'articles', params: {id:list.id} }" class="list clearFix" v-for="list in lists" :key="list.id">
       <div class="l-type">
         <span>{{ list.category.name }}</span>
       </div>
@@ -9,7 +9,7 @@
         {{ list.title }}
       </div>
     </router-link>
-    <router-link :to="{ name: 'SpColums'}" tag="div" class="more">
+    <router-link :to="{ name: 'spColums'}" tag="div" class="more">
         more<i class="iconfont icon-iconfontjiantou2"></i>
     </router-link>
 
@@ -18,7 +18,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  computed:mapGetters({
+  computed: mapGetters({
       lists: 'preSpItem'
   }),
 }

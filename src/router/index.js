@@ -7,15 +7,19 @@ import LiveRooms from '../view/LiveRooms.vue'
 import Videos from '../view/Videos.vue'
 import LiveVideos from '../view/LiveVideos.vue'
 import Articles from '../view/Articles.vue'
+import Login from '../components/Login.vue'
+import Roast from '../view/Roast.vue'
 
 
 Vue.use(Router)
 
 export default new Router({
+   mode: 'history',
+  // base: __dirname,
   routes: [
     {
       path: '/',
-      name: 'Main',
+      name: 'main',
       component: Main,
     },
     {
@@ -24,30 +28,44 @@ export default new Router({
       component: Videos,
     },
     {
+      path: '/roast',
+      name: 'roast',
+      component: Roast,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },
+    {
       path: '/live-video/:id',
-      name: 'LiveVideos',
+      name: 'liveVideos',
       component: LiveVideos
     },
     {
       path: '/articles/:id',
-      name: 'Articles',
+      name: 'articles',
       component: Articles
     },
     {
       path: '/patitons',
-      name: 'Patitons',
+      name: 'patitons',
       component: Patitons
     },
     {
-      path: '/SpColums',
-      name: 'SpColums',
+      path: '/spColums',
+      name: 'spColums',
       component: SpColums
     },
     {
-      path: '/LiveRooms',
-      name: 'LiveRooms',
+      path: '/liveRooms',
+      name: 'liveRooms',
       component: LiveRooms
-    }
+    },
+    // {
+    //   path: '*',
+    //   redirect: '/main',
+    // }
   ],
   linkActiveClass:"active",
 })

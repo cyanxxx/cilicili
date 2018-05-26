@@ -1,17 +1,40 @@
 import video from '../../api/video'
 import rule from '../../api/public'
+
 const state = {
-  lists:{}
+  lists: {},
+  open:false,
+  videoId:0
 }
 
 const getters = {
-  lists: state => state.lists
+  lists: state => state.lists,
+  open: state => state.open,
+  videoId: state => state.videoId
+}
+
+const mutations = {
+  setVideos(state, item) {
+    state.lists = item;
+  },
+  closeModal(state) {
+    state.open = false;
+  },
+  openModal(state) {
+    state.open = true;
+  },
+
+  setVideoId(state,id) {
+    state.videoId = id;
+    //console.log(state.videoId)
+  }
 }
 
 const actions = {
-  getVideos({ commit }){
-    video.getVideo(items => commit('setVideos',items))
-  }
+  getVideos({ commit }) {
+    video.getVideo(items => commit('setVideos', items))
+  },
+
 }
 // "bangumi": {
 //         "0": {
@@ -23,12 +46,6 @@ const actions = {
 //             "pic": "http://i2.hdslb.com/bfs/archive/d5c07060bb409bab2ff4b411924dcf8557ea93a9.jpg",
 //             "title": "【1月】戒律的复活 15【独家正版】",
 //{'bangumi':[{},{},{}],'xx':[]}
-const mutations = {
-  setVideos(state,item){
-    state.lists = item; 
-  }
-
-}
 
 export default{
   state,getters,actions,mutations
