@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # giligili
 
 > A Vue.js project
@@ -25,3 +26,6 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# cilicili
+>>>>>>> 4d09b79762c29e135948051b26248ddd4d6de965
