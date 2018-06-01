@@ -68,6 +68,7 @@ export default {
     finishLoad(loadedIndex) {
       if(loadedIndex == this.bannerImg.length){
         document.body.style.overflow = 'auto';
+        this.$refs.box.style.height =  100 + '%';
         this.$refs.progress.style.width = 100 + '%';
         this.$refs.box.classList.add('fin');
         this.status = false;
@@ -80,7 +81,7 @@ export default {
 <style lang="scss" scoped>
   .img_wrapper{
     position: relative;
-    width: 100%;
+    width:100%;
     height: 100%;
     overflow: hidden;
     >.overlay{

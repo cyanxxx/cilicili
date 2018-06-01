@@ -21,7 +21,7 @@ export default {
 <style lang="scss" scoped>
   .down{
     position: fixed;
-    right: 10%;
+    right: 30px;
     top:95%;
     cursor: pointer;
     .icon-58{

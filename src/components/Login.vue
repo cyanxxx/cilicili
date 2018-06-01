@@ -122,7 +122,7 @@ $darkColor:#1ca099;
 @mixin middle {
   display: inline-block;
   width: 50%;
-  margin-right: -3px;
+  margin-right: -10px;
   padding: 10px;
   vertical-align: middle;
   text-align: center;
@@ -141,7 +141,6 @@ $darkColor:#1ca099;
 .login,.sign{
   height: 100%;
   margin-top:65px;
-  text-align: center;
   @include middle;
   .top{
     padding: 10px 0;

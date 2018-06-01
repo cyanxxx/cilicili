@@ -62,7 +62,7 @@
       </div>
     <modal v-if="needLogin && open"></modal>
     <hover-img v-if="hoverOpen" :hoverStyle="hoverStyle" :height="imgHeight" :timer="timer"></hover-img>
-    <back-top></back-top>
+    <back-top v-if="login"></back-top>
   </div>
 </template>
 
