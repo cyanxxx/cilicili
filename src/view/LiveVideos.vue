@@ -41,7 +41,6 @@ export default {
   }
   $color:#1fb5ad;
   .room{
-    margin-top: 40px;
     .title{
     background: $color;
     padding:7px 16px;

@@ -20,16 +20,15 @@
 </template>
 
 <script>
-
+import faker from "../../static/faker"
+import { DEBUG } from '../api/config'
 export default {
-  props: {
-    bannerImg: Array
-  },
   data () {
     return{
       text: 'CILICILI',
       visible:  false,
       status: true,
+      bannerImg: []
     }
   },
   computed:{
@@ -39,6 +38,7 @@ export default {
     }
   },
   created () {
+    this.bannerImg = faker.bannerImgData();
     document.body.style.overflow = 'hidden';
   },
   mounted () {
@@ -46,22 +46,32 @@ export default {
       let loadedIndex = 0;
       this.$refs.img.forEach((x) => {
         x.onload = ()=> {
-          loadedIndex++;
-          this.$refs.progress.style.width = 16 + parseInt(this.$refs.progress.style.width)+'%';
-          if(loadedIndex == this.bannerImg.length){
-            document.body.style.overflow = 'auto';
-            this.$refs.progress.style.width = 100 + '%';
-            this.$refs.box.classList.add('fin');
-            this.status = false;
-          }
+            loadedIndex++;
+            this.$refs.progress.style.width = 16 + parseInt(this.$refs.progress.style.width)+'%';
+            if(!DEBUG){
+              this.finishLoad(loadedIndex)
+            }
         }
       })
-    });
+      if(DEBUG){
+        setTimeout(()=>{
+          this.finishLoad(loadedIndex)
+        },600);
+      }
+    })
   },
   methods: {
     down() {
       let height = window.localStorage.getItem('height');
       document.documentElement.scrollTop = height;
+    },
+    finishLoad(loadedIndex) {
+      if(loadedIndex == this.bannerImg.length){
+        document.body.style.overflow = 'auto';
+        this.$refs.progress.style.width = 100 + '%';
+        this.$refs.box.classList.add('fin');
+        this.status = false;
+      }
     }
   }
 }

@@ -5,7 +5,6 @@
       <textarea name="comment" class="commetArea" v-model="content"></textarea>
       <button type="submit" name="button" @click="send">发送</button>
     </div>
-
     <div class="comments_container">
       <div class="lists clearFix" v-for="(list,index) in lists">
         <div class="author">
@@ -174,6 +173,10 @@ $color:#1fb5ad;
         min-height: 60px;
         .text{
           margin-top: 7px;
+        }
+        a{
+          color:#fff;
+          text-decoration: none;
         }
       }
   }

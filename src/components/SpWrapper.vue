@@ -53,6 +53,10 @@ export default  {
 
 
 <style lang="scss" scoped>
+a{
+  color:#fff;
+  text-decoration: none;
+}
 @mixin to-drak {
   animation: all .2s ease-in;
   &:hover{

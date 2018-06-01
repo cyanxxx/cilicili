@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <banner :bannerImg="bannerImgData" v-if="firstLoad"></banner>
+    <banner v-if="firstLoad"></banner>
     <div class="container">
       <!-- 导航区 -->
       <ul class="nav">
@@ -11,7 +11,10 @@
         <router-link tag="li" :to="{ name:'roast'}" >吐槽</router-link>
       </ul>
       <transition name="fade">
+        <keep-alive>
           <router-view class="view"></router-view>
+        </keep-alive>
+
       </transition>
 
     </div>
@@ -21,7 +24,7 @@
 <script>
 let img =  require.context('../static/pic',false, /\.(png|jpg|gif|svg)$/)
 import font from '../static/fonts/font.css'
-import faker from "../static/faker"
+
 import Banner from './components/Banner.vue'
 export default {
   name: 'App',
@@ -30,7 +33,6 @@ export default {
   },
   data() {
     return {
-      bannerImgData: [],
       firstLoad: false,
     }
   },
@@ -38,8 +40,8 @@ export default {
   created() {
     window.localStorage.setItem('height',document.documentElement.clientHeight);
     window.localStorage.setItem('width',document.documentElement.clientWidth);
-    this.bannerImgData = faker.bannerImgData();
-    this.firstLoad = this.$route.name == 'Main'?   true : false;
+
+    this.firstLoad = this.$route.name == 'main'?   true : false;
     this.$store.dispatch('getSpItem');
     this.$store.dispatch('getliveItem');
 
@@ -72,7 +74,7 @@ export default {
   }
   .view{
     margin-top: 40px;
-    transition: all .5s ease;
+    transition: all .6s ease;
   }
   .fade-enter{
       opacity: 0;

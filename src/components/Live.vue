@@ -40,18 +40,21 @@ import { mapGetters } from 'vuex'
         document.body.addEventListener('mouseup',this.relase)
       },
       scrollTo(e) {
+        //返回两者应该移动的距离
         let dis = this.calcDis(e.clientY - this.lastPos);
         this.lastPos = e.clientY;
 
-        this.$refs.scroll.style.top = dis.scrollDis + parseFloat(this.$refs.scroll.style.top)+'px';
-        this.$refs.list.style.top = -dis.listDis + parseFloat(this.$refs.list.style.top)+'px';
+        this.$refs.scroll.style.top = dis.scrollDis + parseFloat(this.$refs.scroll.style.top) + 'px';
+        this.$refs.list.style.top = -dis.listDis + parseFloat(this.$refs.list.style.top) + 'px';
         this.outOfBound();
       },
       outOfBound() {
-        if(this.$refs.scroll.offsetTop <=0){
+        if(this.$refs.scroll.offsetTop <= 0){
           this.$refs.scroll.style.top = '0px';
           this.$refs.list.style.top = '0px';
         }
+        //  可显示的高度474px，总共1150,1150-474最低端显示的位置
+        //  滚动条474-80
         else if(this.$refs.scroll.offsetTop >= 394){
           this.$refs.scroll.style.top = '394px';
           this.$refs.list.style.top = '-676px';
@@ -62,23 +65,9 @@ import { mapGetters } from 'vuex'
           let listDis = scrollDis * 676 / 394;
           return {scrollDis, listDis};
       },
-      move(e) {
-
-        //鼠标按下并移动(不断触发)
-        if(this.inBar){
-
-          //console.log(e.clientY );
-          //按比例放大到实际移动的距离
-          //滑块80px
-          //总长474px，有效距离474-80=394px
-          //内容115*10 = 1150px
-          //每次显示4个
-
-        }
-      },
       scrollNext(e) {
-        if(e.clientX<this.$refs.box.getBoundingClientRect().left|| e.clientX>this.$refs.box.getBoundingClientRect().righ|| e.clientY<this.$refs.box.getBoundingClientRect().top||
-        e.clientY>this.$refs.box.getBoundingClientRect().bottom)return;
+        if(e.clientX < this.$refs.box.getBoundingClientRect().left || e.clientX > this.$refs.box.getBoundingClientRect().right || e.clientY<this.$refs.box.getBoundingClientRect().top||
+        e.clientY > this.$refs.box.getBoundingClientRect().bottom)return;
 
         let wheel = e.wheelDelta? e.wheelDelta / 120 * 10 : -e.deltaY / 3 * 10;
         let dis = this.calcDis(wheel);
@@ -103,6 +92,9 @@ $color:#1fb5ad;
   position: absolute;
   top:0;
   left: 0;
+}
+a{
+    text-decoration: none;
 }
 .unselectable {
   /*当前版本的火狐（53）和Edge（15）不支持user-select标准属性，需要使用浏览器厂商前缀*/

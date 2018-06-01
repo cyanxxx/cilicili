@@ -1,4 +1,4 @@
-import { getUserInfo, getTimeLine,getPublicTimeline } from '../../api/userInfo'
+import { getUserInfo, getTimeLine,getPublicTimeline, getWbComment } from '../../api/userInfo'
 import { oauthPost } from '../../api/auth'
 
 const state  = {
@@ -7,7 +7,10 @@ const state  = {
   userName:'',
   userImg:'',
   timeLineLists:[],
-  page:1
+  page:1,
+  weiboComments:[],
+  hoverData:[],
+  hoverOpen:false
 }
 
 const getters = {
@@ -18,6 +21,9 @@ const getters = {
   userImg: state => state.userImg,
   timeLineLists: state => state.timeLineLists,
   page: state => state.page,
+  weiboComments: state => state.weiboComments,
+  hoverData: state => state.hoverData,
+  hoverOpen: state => state.hoverOpen
 }
 
 const mutations = {
@@ -25,18 +31,33 @@ const mutations = {
     //save in state
     state.token = token
     state.login = true
-    //console.log(state.login)
   },
   saveUserInfo(state,data) {
     state.userName = data.screen_name;
     state.userImg = data.profile_image_url;
   },
-  saveTimeLine(state,data,okFun) {
+  saveTimeLine(state,data) {
     state.timeLineLists = data;
   },
-  savePublicTimeLine(state,data) {
-    state.timeLineLists = data;
+  saveComments(state,{data,id}){
+    state.timeLineLists.forEach((obj)=>{
+      for (var key in obj) {
+        if (key == 'id' && obj.id == id) {
+          obj.weiboComments = data;
+          state.weiboComments = data;
+        }
+      }
+    })
   },
+  closeHover(state){
+    state.hoverOpen = false;
+  },
+  openHover(state){
+    state.hoverOpen = true;
+  },
+  saveHoverData(state, data) {
+    state.hoverData = data;
+  }
 }
 
 const actions = {
@@ -46,7 +67,7 @@ const actions = {
         code,
         response => {
             //提交mutation
-            commit('loginIn', response.data)
+            commit('loginIn', response)
         },
         err => {
             console.log(err);
@@ -64,15 +85,27 @@ const actions = {
                 }
               )
   },
-  getHomeTimeline: ({ commit,state },page) => {
+  getHomeTimeline: ({ commit, state },{page, okFun}) => {
     getTimeLine(state.token.access_token,page,
                 response => {
-                  commit('saveTimeLine',response.statuses)
+                  commit('saveTimeLine',response.statuses);
+                  console.log(this);
+                  okFun()
                 },
                 err => {
                   console.log(err);
                 }
               )
+  },
+  getWbComments: ( { commit,state },{id,page,okfun} ) => {
+    getWbComment(state.token.access_token,page,id,
+                response => {
+                  commit('saveComments',{data:response,id:id});
+                    okfun(id)
+                },
+                err => {
+                  console.log(err);
+                })
   }
 }
 export default {

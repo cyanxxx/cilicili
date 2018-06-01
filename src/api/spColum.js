@@ -1,9 +1,16 @@
 import axios from 'axios';
+import { HOST_CONCIG, API_ROUTER_CONFIG, DEBUG } from './config'
+import fakeData from '../../static/spcolum.json'
 
 export default{
   getItem (cb) {
-      axios.get('https://www.easy-mock.com/mock/5ae9e5cdbd50881f100270eb/s/spcolum').then(res=>{
+    if(DEBUG){
+      cb(fakeData.articles)
+    }else{
+      axios.get(HOST_CONCIG.mock+API_ROUTER_CONFIG.sp_colum).then(res=>{
         cb(res.data.articles)
       })
+    }
+
   }
 }

@@ -1,12 +1,12 @@
 <template lang="html">
   <div>
-    <div class="articles" v-for="list in timeLineLists">
+    <div class="articles" v-for="list in lists">
       <div class="user">
         <div class="top clearFix">
           <div class="date fr">{{ formatTime(list.created_at) }}</div>
         </div>
         <div class="usermsg">
-          <a :href="list.user.url" class="user_img" data-load='false' popups-owns='user-457'>
+          <a :href="list.user.url" class="user_img" @mouseenter="hoverImg(list.user, $event)" @mouseleave="close">
             <img :src="list.user.profile_image_url" alt="user_image">
           </a>
           <div class="msg">
@@ -17,11 +17,10 @@
       </div>
         <div class="articles_wrapper">
           <div class="articles_ctx">
-            <span class="text">
-              {{ list.text }}
+            <span class="text" v-html="formatText(list.text)">
             </span>
           </div>
-          <div class="content_img">
+          <div class="content_img"  v-if="list.pic_urls">
             <ul  class="content-img-ul clearFix">
                 <li v-for="img in list.pic_urls" class="img-li-default">
                     <div class="img-div" :style="{backgroundImage:'url(' + formatThumbImg(list.thumbnail_pic) + ')'}">
@@ -31,7 +30,7 @@
           </div>
           <div class="content-re-content" v-if="list.retweeted_status">
               <span class="re-content-text" v-html="'@' + list.retweeted_status.user.name + ': '
-                  + list.retweeted_status.text"></span>
+                  + formatText(list.retweeted_status.text)"></span>
               <div  class="content-img" v-if="list.retweeted_status.pic_urls">
                   <ul  class="content-img-ul clearFix">
                       <li v-for="innerImg in list.retweeted_status.pic_urls" class="img-li-default">
@@ -46,7 +45,7 @@
               <i class="iconfont icon-zan2"></i>
               {{ list.attitudes_count }}
             </button>
-          <button type="button" class="comment_btn" >
+          <button type="button" class="comment_btn" @click="loadComments(list.id,list)">
               <i class="iconfont icon-icon"></i>
               回复
             </button>
@@ -59,53 +58,119 @@
             分享
           </button>
         </div>
+        <comment-wrapper v-if = "JSON.stringify(showList) != '{}' && list.id in showList  &&showList[list.id].open" :commentList="showList[list.id].data"></comment-wrapper>
       </div>
     <modal v-if="needLogin && open"></modal>
+    <hover-img v-if="hoverOpen" :hoverStyle="hoverStyle" :height="imgHeight" :timer="timer"></hover-img>
     <back-top></back-top>
   </div>
 </template>
 
 <script>
 import BackTop from '../components/BackTop.vue'
-import * as DateUtils from '../utils/date-utils'
+import Loading from '../components/Loading.vue'
+import CommentWrapper from '../components/CommentWrapper.vue'
+import HoverImg from '../components/HoverImg.vue'
 import Modal from '../components/Modal.vue'
-import {
-  mapGetters,
-  mapActions,
-  mapMutations
-} from 'vuex'
+import * as DateUtils from '../utils/date-utils'
+import { formatDetails,formatUrl } from '../utils/getString'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
+      page:1,
+      lists:{},
+      showList:{},
+      hoverStyle: {
+          width: '350px',
+          top: 0,
+          left: 0
+      },
+      imgHeight:0,
+      timer:0,
     }
   },
-  components:{ Modal, BackTop} ,
+  components:{ Modal, BackTop, Loading, CommentWrapper, HoverImg},
   computed: {
-    ...mapGetters(['timeLineLists', 'login','needLogin','open'])
+    ...mapGetters(['timeLineLists', 'login','needLogin','open', "weiboComments","hoverOpen"])
   },
   watch:{
-    timeLineLists:function(val){
-      if(val.length){
-        this.$bar.finish();
-      }
-    },
     login:function(val){
+      var vue = this;
       if(val){
         this.$bar.start();
-        this.getHomeTimeline(1);
+        this.getHomeTimeline({page:1,okFun:vue.finishBar});
+        window.addEventListener('scroll', this.scrollBar)
       }
-    }
+    },
+    timeLineLists: {
+      handler:function (val, oldVal) {
+          if (val) {
+              if (this.page == 1) {
+                  this.lists = val;
+              } else {
+                  this.lists = [...this.lists, ...val]
+              }
+          }
+      },
+      deep:true
+    },
   },
-  mounted() {
+  activated() {
+    var vue = this;
     if (this.login) {
-      this.getHomeTimeline(1);
+      this.$bar.start();
+      this.getHomeTimeline({page:1,okFun:vue.finishBar});
+      window.addEventListener('scroll', this.scrollBar)
     }else{
       this.openModal();
     }
   },
+  deactivated() {
+    if(this.login){
+      window.removeEventListener('scroll', this.scrollBar)
+    }
+  },
   methods: {
-    ...mapActions(['getHomeTimeline', 'getPublicTimeline']),
-    ...mapMutations(['openModal']),
+    ...mapActions(['getHomeTimeline', 'getPublicTimeline', 'getWbComments']),
+    ...mapMutations(['openModal', 'saveHoverData', 'openHover', 'closeHover']),
+    loadComments:function(id,list) {
+      if(id in this.showList == false){
+        var vue = this;
+        this.getWbComments({id:id,page:1,okfun:vue.showData});
+      }else{
+        this.showList[id].open = !this.showList[id].open;
+      }
+    },
+
+    hoverImg:function(data, e) {
+      if(this.timer){clearTimeout(this.timer);}
+      var target= e.target;
+      var top = target.offsetTop;
+      var left = target.offsetLeft;
+      var width = target.offsetWidth;
+      var height = target.offsetHeight;
+      this.saveHoverData(data);
+      this.$set(this.hoverStyle,'top',top + height +'px')
+      this.$set(this.hoverStyle,'left',left + width / 2+'px')
+      this.openHover();
+      this.imgHeight = top;
+
+    },
+    close:function() {
+      this.timer = setTimeout(()=>{
+        this.closeHover()
+      },500)
+    },
+    showData:function(id) {
+      this.show = true;
+      var data = this.weiboComments;
+      var config = {};
+      this.$set(config,'data',data);
+      this.$set(config,'open',true);
+      this.$set(this.showList,id,config);
+    },
     formatThumbImg: function(img) {
       let format = img.replace('thumbnail', 'thumb180');
       format = format.replace('wx1', 'wx3')
@@ -114,11 +179,40 @@ export default {
     formatTime(time) {
       return DateUtils.format(time);
     },
+    formatText(val) {
+      var formatval = formatUrl(val);
+      return formatDetails(formatval);
+    },
+    finishBar() {
+      var vue = this;
+      vue.$bar.finish();
+    },
+    loadingMore() {
+      var vue = this;
+      this.page++;
+      this.$bar.start();
+      this.getHomeTimeline({page:this.page,okFun:vue.finishBar})
+    },
+    scrollBar() {
+      var pageH = document.documentElement.scrollHeight;
+      var scrollH = document.documentElement.scrollTop || document.body.scrollTop;
+      var viewH = document.documentElement.clientHeight;
+      if(viewH + scrollH == pageH){
+          this.loadingMore();
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+a{
+  text-decoration: none;
+  color:#666;
+}
+p{
+  color:#666;
+}
 .content-re-content {
     background: #f4f4f4;
     padding: 10px 16px;
@@ -165,6 +259,7 @@ export default {
             color: #666;
             display: inline-block;
             vertical-align: middle;
+            margin-left: 10px;
             a {
                 color: #666;
             }
@@ -175,7 +270,8 @@ export default {
         }
     }
     .articles_wrapper {
-        cursor: pointer;
+        color: #666;
+        margin-top: 16px;
     }
     .sub_wrapper {
         margin-top: 10px;
@@ -202,100 +298,6 @@ export default {
     }
 }
 
-.comment_container {
-    width: 98%;
-    margin: 15px auto;
-    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    display: none;
-    &.active {
-        display: block;
-    }
-    .top {
-        padding: 10px 16px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    .comment_wrapper {
-        padding: 10px 16px;
-    }
-    /*二级评论底栏样式*/
-    .comment_item .like_btn {
-        background: #fff;
-        color: #c3c3c3;
-    }
 
-    .collect_btn.active,
-    .comment_item .like_btn.active,
-    .dislike_btn.active,
-    .share_btn.active {
-        color: #11A388;
-        background: #fff;
-    }
-    .comment_item .sub_wrapper button:not(:first-child) {
-        display: none;
-    }
-    .comments {
-        margin: 0;
-    }
-}
 
-.comment_item {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    img {
-        max-width: 22px;
-        width: 100%;
-        vertical-align: middle;
-        border-radius: 50px;
-    }
-    span {
-        font-size: 14px;
-    }
-    .comment_date {
-        color: #c3c3c3;
-        font-size: 16px;
-    }
-
-    .comment_text {
-        margin: 5px 0;
-    }
-}
-.recomment {
-    margin-top: 15px;
-    display: none;
-    &:active {
-        display: block;
-    }
-}
-
-.add_comment input[type=text],
-.recomment input[type=text] {
-    width: 100%;
-    color: #666;
-}
-
-.comment_action,
-.recomment_action {
-    text-align: right;
-    margin-top: 10px;
-}
-
-.line {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-    padding: 12px 16px;
-}
-
-.add_comment {
-    padding-top: 20px;
-    input[type=text] {
-        padding: 10px;
-    }
-    .comment {
-        background: #11A388;
-        color: #fff;
-        font-size: 14px;
-        padding: 5px 12px;
-    }
-}
 </style>

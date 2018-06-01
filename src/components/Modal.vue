@@ -51,7 +51,7 @@ export default {
       this.close();
     },
     oauth() {
-      this.$router.replace({name:'login'})
+      this.$router.push({name:'login'})
     }
   }
 }

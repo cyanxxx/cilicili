@@ -16,7 +16,7 @@
            <label for="password">密码</label>
            <div class="error" v-show="pErr">*密码不能为空</div>
         </div>
-        <button class="submit">登陆</button>
+        <button class="submit" @click.prevent="oauth">登陆</button>
         <a class="submit" @click.prevent="oauth">微博登陆</a>
       </form>
     </div>
@@ -32,7 +32,7 @@
 import { getUrlKey } from '../utils/getString'
 import { getVideoId, clearVideoId } from '../utils/localStore'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { HOST_CONCIG, KEY_CONFIG } from '../api/auth'
+import { HOST_CONCIG, KEY_CONFIG, DEBUG } from '../api/config'
 
 export default {
   data() {
@@ -59,13 +59,17 @@ export default {
     //检查是否拿到了code
     this.checkUrl();
   },
+  watch: {
+    login:function(val){
+      if(val && DEBUG){
+        this.$router.go(-1)
+      }
+    }
+  },
   methods: {
-    ...mapActions(['signIn','getUser']),
+    ...mapActions(['signIn']),
     ...mapMutations(['setVideoId']),
     checkUrl() {
-      if(this.login){
-        this.goBackToVideo();
-      }else{
         if (this.code) {
             this.signIn(this.oauthCode);
             var videoId = getVideoId();
@@ -74,9 +78,8 @@ export default {
           }else{
             this.getBackToRoast();
           }
-
         }
-      }
+
     },
     getBackToRoast() {
       this.$router.replace({name:'roast'});
@@ -87,11 +90,16 @@ export default {
       this.$router.replace({name:'video',params:{id:this.videoId}});
     },
     oauth() {
-      var client_id = KEY_CONFIG.app_key;
-      var redirect_uri = KEY_CONFIG.redirect_uri;
-      var oauthUrl = HOST_CONCIG.oauth;
-      //授权登陆页面
-      window.open(oauthUrl + '?client_id=' + client_id + '&redirect_uri=' + redirect_uri, "_self", "", true);
+      if(DEBUG){
+        this.signIn(1);
+      }else{
+        var client_id = KEY_CONFIG.app_key;
+        var redirect_uri = KEY_CONFIG.redirect_uri;
+        var oauthUrl = HOST_CONCIG.oauth;
+        //授权登陆页面
+        window.open(oauthUrl + '?client_id=' + client_id + '&redirect_uri=' + redirect_uri, "_self", "", true);
+      }
+
     },
     check(val,err) {
       if(!val){

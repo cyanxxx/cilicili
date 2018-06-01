@@ -1,19 +1,28 @@
 import axios from 'axios'
 import rule from './public'
+import { HOST_CONCIG, API_ROUTER_CONFIG, DEBUG } from './config'
+import fakeData from '../../static/live.json'
+const formatData = (data) => {
+  data.forEach(val =>{
+    for (var key in val) {
+      if (key=='pic') {
+        val[key] = rule.replaceUrl(val[key]);
+      }
+    }
+  })
+  return data;
+}
 export default{
   getData (cb) {
-    axios.get('https://www.easy-mock.com/mock/5ae9e5cdbd50881f100270eb/s/live').then(res => {
-      let data = res.data.recommend;
-      //console.log(data);
-      data.forEach(val =>{
-        for (var key in val) {
-          if (key=='pic') {
-            val[key] = rule.replaceUrl(val[key]);
-          }
-        }
-      })
-      //console.log(data);
+    if(DEBUG){
+      let data = formatData(fakeData.recommend)
       cb(data)
-    })
+    }else{
+      axios.get(HOST_CONCIG.mock+API_ROUTER_CONFIG.live).then(res => {
+        let data = formatData(res.data.recommend)
+        cb(data)
+      })
+    }
+
   }
 }

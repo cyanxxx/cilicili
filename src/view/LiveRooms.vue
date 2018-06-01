@@ -12,8 +12,8 @@
               <img v-lazy="item.pic" alt="item.title">
               <div class="overlay">
                 <div class="content">
-                  <div class="title">{{item.title}}</div>
-                  <div class="author">{{item.uname}}</div>
+                  <div class="title">{{ item.title }}</div>
+                  <div class="author">{{ item.uname }}</div>
                 </div>
               </div>
           </router-link>
