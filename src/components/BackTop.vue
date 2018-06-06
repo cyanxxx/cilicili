@@ -22,7 +22,7 @@ export default {
   .down{
     position: fixed;
     right: 30px;
-    top:95%;
+    bottom: 16px;
     cursor: pointer;
     .icon-58{
       font-weight: bold;

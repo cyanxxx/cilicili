@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="comment_container">
     <div class="top clearFix">
-      <div class="comments fl">{{ commentList.total_number }}条评论</div>
+      <div class="comments fl">{{ comment.total_number }}条评论</div>
       <button class="fr">切换 {{ order }} 顺序</button>
     </div>
     <div class="comment_wrapper">
-      <div class="comment_item" v-for="list in commentList.comments">
+      <div class="comment_item" v-for="list in comment.comments">
         <div class="clearFix">
           <a :href="list.user.url" class="user_img" >
             <img :src="list.user.profile_image_url" alt="user_image">
@@ -16,7 +16,7 @@
         <p class="comment_text">{{ list.text }}</p>
       </div>
     </div>
-    <pages></pages>
+    <pages @pageChange="showInfo" :totalPages="Math.ceil(page / 10)"></pages>
     <div class="add_comment line">
       <input type="text" name="reply"  placeholder="写下你的回复...">
       <div class="comment_action">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Pages from './Pages.vue'
 import * as DateUtils from '../utils/date-utils'
 import { formatDetails,formatUrl } from '../utils/getString'
@@ -37,17 +38,32 @@ export default {
         order:"时间",
       }
   },
-
-  props:{
+  props: {
     commentList:{
-      type:Object
+      type: Object
+    },
+    id: {
+      type: Number
     }
   },
-  components:{ Pages },
-  methods:{
+  computed:{
+    ...mapGetters(['page', 'weiboComments']),
+    comment:function() {
+      if(this.pages != 1 ){
+        return this.weiboComments;
+      }
+      return this.commentList;
+    }
+  },
+  components: { Pages },
+  methods: {
+    ...mapActions(['getWbComments']),
     formatTime(time) {
       return DateUtils.format(time);
     },
+    showInfo(param) {
+      this.getWbComments({...param,id:this.id})
+    }
   }
 }
 </script>

@@ -47,7 +47,7 @@
             </button>
           <button type="button" class="comment_btn" @click="loadComments(list.id,list)">
               <i class="iconfont icon-icon"></i>
-              回复
+              回复({{ list.comments_count }})
             </button>
           <button type="button" class="collect_btn" :class="{ active : list.favorited}">
             <i class="iconfont icon-shoucang"></i>
@@ -58,7 +58,7 @@
             分享
           </button>
         </div>
-        <comment-wrapper v-if = "JSON.stringify(showList) != '{}' && list.id in showList  &&showList[list.id].open" :commentList="showList[list.id].data"></comment-wrapper>
+        <comment-wrapper v-if = "JSON.stringify(showList) != '{}' && list.id in showList  &&showList[list.id].open" :commentList="showList[list.id].data" :id="list.id"></comment-wrapper>
       </div>
     <modal v-if="needLogin && open"></modal>
     <hover-img v-if="hoverOpen" :hoverStyle="hoverStyle" :height="imgHeight" :timer="timer"></hover-img>
@@ -121,7 +121,7 @@ export default {
     var vue = this;
     if (this.login) {
       this.$bar.start();
-      this.getHomeTimeline({page:1,okFun:vue.finishBar});
+      this.getHomeTimeline({ page:1,okFun:vue.finishBar });
       window.addEventListener('scroll', this.scrollBar)
     }else{
       this.openModal();

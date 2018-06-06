@@ -14,7 +14,7 @@ const actions = {
   getComments ({ commit }, param) {
     comment.getComments(param,items => commit('setComments',items))
   },
-  postComments ({commit}, items) {
+  postComments ({ commit }, items) {
     commit('addComments',items)
   }
 }

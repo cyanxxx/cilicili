@@ -45,6 +45,7 @@ const mutations = {
         if (key == 'id' && obj.id == id) {
           obj.weiboComments = data;
           state.weiboComments = data;
+          state.page = data.total_number;
         }
       }
     })
@@ -97,11 +98,11 @@ const actions = {
                 }
               )
   },
-  getWbComments: ( { commit,state },{id,page,okfun} ) => {
+  getWbComments: ( { commit,state },{id, page, okfun} ) => {
     getWbComment(state.token.access_token,page,id,
                 response => {
                   commit('saveComments',{data:response,id:id});
-                    okfun(id)
+                    okfun && okfun(id)
                 },
                 err => {
                   console.log(err);

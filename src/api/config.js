@@ -34,4 +34,4 @@ const api_router_config = {
 export const HOST_CONCIG = host_config
 export const KEY_CONFIG = key_config
 export const API_ROUTER_CONFIG = api_router_config
-export const DEBUG = true;
+export const DEBUG = false;

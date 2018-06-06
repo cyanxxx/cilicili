@@ -1,13 +1,13 @@
 <template>
   <div>
     <slot></slot>
-    <div class="box clearFix" :style="{'top':0}"ref="box" @wheel="scrollNext">
+    <div class="box clearFix" :style="{'top':0}" ref="box" @wheel="scrollNext">
       <div class="scroll-bar">
         <div class="scroll"  ref="scroll" @mousedown="press"></div>
       </div>
       <div class="list" ref="list">
-        <router-link :to="{ name: 'liveVideos', params: {id:item.roomid} }" :key= "item.roomid" class="item clearFix" v-for = "(item,index) in lists">
-          <span class="tag">TOP{{index+1}}</span>
+        <router-link :to="{ name: 'liveVideos', params: {id: item.roomid} }" :key= "item.roomid" class="item clearFix" v-for = "(item, index) in lists">
+          <span class="tag">TOP{{ index+1 }}</span>
           <span class="title">{{ item.title }}</span>
           <span class="author">by:{{ item.uname }}</span>
         </router-link>
@@ -26,20 +26,38 @@ import { mapGetters } from 'vuex'
     data () {
       return {
         lastPos:0,
+        scrollHeight:80,
+        totalHeight:0,
+        viewableHeight:0,
       }
     },
-    computed: mapGetters({lists:'liveItem'}),
+    computed: {
+      ...mapGetters({lists: 'liveItem'}),
+      scrollableHeight(){
+        return this.viewableHeight - this.scrollHeight
+      },
+      endPos() {
+        return this.totalHeight - this.viewableHeight;
+      }
+    },
+    mounted() {
+      this.totalHeight = this.$refs.list.clientHeight;
+      this.viewableHeight = this.$refs.box.clientHeight;
+    },
     methods: {
       press(e) {
+
         //记录当前的位置
         this.lastPos = e.clientY;
         this.inBar = true;
+
         //其他元素不可被选中
         document.body.classList.add("unselectable");
         document.body.addEventListener('mousemove',this.scrollTo)
         document.body.addEventListener('mouseup',this.relase)
       },
       scrollTo(e) {
+
         //返回两者应该移动的距离
         let dis = this.calcDis(e.clientY - this.lastPos);
         this.lastPos = e.clientY;
@@ -53,16 +71,17 @@ import { mapGetters } from 'vuex'
           this.$refs.scroll.style.top = '0px';
           this.$refs.list.style.top = '0px';
         }
+
         //  可显示的高度474px，总共1150,1150-474最低端显示的位置
         //  滚动条474-80
-        else if(this.$refs.scroll.offsetTop >= 394){
-          this.$refs.scroll.style.top = '394px';
-          this.$refs.list.style.top = '-676px';
+        else if(this.$refs.scroll.offsetTop >= this.scrollableHeight){
+          this.$refs.scroll.style.top =  this.scrollableHeight + 'px';
+          this.$refs.list.style.top =  -this.endPos + 'px';
         }
       },
       calcDis(y) {
           let scrollDis = y;
-          let listDis = scrollDis * 676 / 394;
+          let listDis = scrollDis * this.endPos / this.scrollableHeight;
           return {scrollDis, listDis};
       },
       scrollNext(e) {

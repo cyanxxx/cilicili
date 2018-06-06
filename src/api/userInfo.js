@@ -68,9 +68,10 @@ export const getWbComment = (accesstoken, page, id, okCallback, errorCallback) =
   //   //okCallback(fakeData)
   // }else{
     var request_data = {
-        access_token:'2.00LGl4DCvKGOIB015ec8b6440rYRs5',
+        //access_token:'2.00LGl4DCvKGOIB015ec8b6440rYRs5',
         page:page,
-        // access_token: accesstoken,
+        access_token: accesstoken,
+        count:10,
         id:id
     }
 

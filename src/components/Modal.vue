@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted() {
-    this.width = document.documentElement.clientWidth;
+    this.width = window.innerWidth;
     this.height =  document.documentElement.clientHeight;
   },
   methods:{

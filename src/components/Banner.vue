@@ -11,10 +11,10 @@
       </div>
     </div>
     <div class="logo" ref="logo">
-      <div class="text" :class="{blink:status}">{{text}}</div>
+      <div class="text" :class="{blink:status}">{{ text }}</div>
     </div>
     <div class="img_box">
-      <img  ref="img" :src="img.url" :height="height" :class="{'twoCols':Math.floor(index/2)==0,'threeCols':Math.floor(index/2)>0}" :index = "index" alt="img.id" v-for=" (img,index) in bannerImg">
+      <img  ref="img" :src="img.url" :height="height" :class="{'twoCols':Math.floor(index / 2) == 0,'threeCols':Math.floor(index / 2) >0 }" :index = "index" alt="img.id" v-for="(img, index) in bannerImg">
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   computed:{
     height () {
       let height = window.localStorage.getItem('height');
-      return height/2;
+      return height / 2;
     }
   },
   created () {
@@ -67,8 +67,7 @@ export default {
     },
     finishLoad(loadedIndex) {
       if(loadedIndex == this.bannerImg.length){
-        document.body.style.overflow = 'auto';
-        this.$refs.box.style.height =  100 + '%';
+        document.body.style.overflowY = 'auto';
         this.$refs.progress.style.width = 100 + '%';
         this.$refs.box.classList.add('fin');
         this.status = false;

@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <pages></pages>
+      <pages @pageChange="showInfo" :totalPages="pages"></pages>
     </div>
     <modal v-if="needLogin && open" :top='top'></modal>
   </div>
@@ -43,7 +43,7 @@ export default {
   },
   components: {Pages,Modal},
   computed: {
-    ...mapGetters({lists:'comments',open:'open',needLogin:'needLogin',login:'login',token:'token',videoId:'videoId',userName:'userName',userImg:'userImg'}),
+    ...mapGetters({lists:'comments',open:'open',needLogin:'needLogin',login:'login',token:'token',videoId:'videoId',userName:'userName',userImg:'userImg',pages:'pages'}),
   },
   mounted() {
     if(this.login){
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     ...mapMutations(['openModal','setVideoId']),
-    ...mapActions(['getUser']),
+    ...mapActions(['getUser', 'getComments','postComments']),
     send () {
       if(this.login){
         let message = {};
@@ -67,7 +67,7 @@ export default {
         message.content = this.content;
         message.goods = 0;
         message.faceImg = this.userImg;
-        this.$store.dispatch('postComments',message);
+        this.postComments(message);
         this.content='';
       }else{
         this.setTop();
@@ -91,6 +91,9 @@ export default {
       var top = document.documentElement.scrollTop;
       var height = document.documentElement.clientHeight;
       this.top = top + height / 2;
+    },
+    showInfo(param) {
+      this.getComments(param)
     }
   }
 }
