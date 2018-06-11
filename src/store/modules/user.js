@@ -4,26 +4,17 @@ import { oauthPost } from '../../api/auth'
 const state  = {
   login:false,
   token: {},
-  userName:'',
-  userImg:'',
-  timeLineLists:[],
-  page:1,
-  weiboComments:[],
-  hoverData:[],
-  hoverOpen:false
+  userInfo:{
+    userName:'',
+    userImg:''
+  }
 }
 
 const getters = {
   needLogin: state => !state.login,
   token: state => state.token,
   login: state => state.login,
-  userName: state => state.userName,
-  userImg: state => state.userImg,
-  timeLineLists: state => state.timeLineLists,
-  page: state => state.page,
-  weiboComments: state => state.weiboComments,
-  hoverData: state => state.hoverData,
-  hoverOpen: state => state.hoverOpen
+  userInfo: state => state.userInfo
 }
 
 const mutations = {
@@ -33,31 +24,8 @@ const mutations = {
     state.login = true
   },
   saveUserInfo(state,data) {
-    state.userName = data.screen_name;
-    state.userImg = data.profile_image_url;
-  },
-  saveTimeLine(state,data) {
-    state.timeLineLists = data;
-  },
-  saveComments(state,{data,id}){
-    state.timeLineLists.forEach((obj)=>{
-      for (var key in obj) {
-        if (key == 'id' && obj.id == id) {
-          obj.weiboComments = data;
-          state.weiboComments = data;
-          state.page = data.total_number;
-        }
-      }
-    })
-  },
-  closeHover(state){
-    state.hoverOpen = false;
-  },
-  openHover(state){
-    state.hoverOpen = true;
-  },
-  saveHoverData(state, data) {
-    state.hoverData = data;
+    state.userInfo.userName = data.screen_name;
+    state.userInfo.userImg = data.profile_image_url;
   }
 }
 
@@ -86,28 +54,7 @@ const actions = {
                 }
               )
   },
-  getHomeTimeline: ({ commit, state },{page, okFun}) => {
-    getTimeLine(state.token.access_token,page,
-                response => {
-                  commit('saveTimeLine',response.statuses);
-                  console.log(this);
-                  okFun()
-                },
-                err => {
-                  console.log(err);
-                }
-              )
-  },
-  getWbComments: ( { commit,state },{id, page, okfun} ) => {
-    getWbComment(state.token.access_token,page,id,
-                response => {
-                  commit('saveComments',{data:response,id:id});
-                    okfun && okfun(id)
-                },
-                err => {
-                  console.log(err);
-                })
-  }
+
 }
 export default {
   state,getters,actions,mutations

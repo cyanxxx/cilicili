@@ -27,7 +27,6 @@ import { mapGetters } from 'vuex'
       return {
         lastPos:0,
         scrollHeight:80,
-        totalHeight:0,
         viewableHeight:0,
       }
     },
@@ -38,10 +37,12 @@ import { mapGetters } from 'vuex'
       },
       endPos() {
         return this.totalHeight - this.viewableHeight;
+      },
+      totalHeight() {
+        return this.$refs.list.clientHeight;
       }
     },
     mounted() {
-      this.totalHeight = this.$refs.list.clientHeight;
       this.viewableHeight = this.$refs.box.clientHeight;
     },
     methods: {

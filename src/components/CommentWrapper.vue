@@ -16,7 +16,7 @@
         <p class="comment_text">{{ list.text }}</p>
       </div>
     </div>
-    <pages @pageChange="showInfo" :totalPages="Math.ceil(page / 10)"></pages>
+    <pages @pageChange="showInfo" :totalPages="Math.ceil(comment.total_number / this.wbCommentNums)"></pages>
     <div class="add_comment line">
       <input type="text" name="reply"  placeholder="写下你的回复...">
       <div class="comment_action">
@@ -36,6 +36,7 @@ export default {
   data() {
       return{
         order:"时间",
+        comment:{}
       }
   },
   props: {
@@ -47,13 +48,10 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['page', 'weiboComments']),
-    comment:function() {
-      if(this.pages != 1 ){
-        return this.weiboComments;
-      }
-      return this.commentList;
-    }
+    ...mapGetters([ 'weiboComments','wbCommentNums']),
+  },
+  created() {
+    this.comment = this.commentList;
   },
   components: { Pages },
   methods: {
@@ -62,7 +60,9 @@ export default {
       return DateUtils.format(time);
     },
     showInfo(param) {
-      this.getWbComments({...param,id:this.id})
+      this.getWbComments({...param,id:this.id}).then(data => {
+          this.comment = data;
+      })
     }
   }
 }

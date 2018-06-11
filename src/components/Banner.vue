@@ -14,7 +14,7 @@
       <div class="text" :class="{blink:status}">{{ text }}</div>
     </div>
     <div class="img_box">
-      <img  ref="img" :src="img.url" :height="height" :class="{'twoCols':Math.floor(index / 2) == 0,'threeCols':Math.floor(index / 2) >0 }" :index = "index" alt="img.id" v-for="(img, index) in bannerImg">
+      <img  v-for="(img, index) in bannerImg" ref="img" :src="img.url"  :class="{'twoCols':Math.floor(index / 2) == 0,'threeCols':Math.floor(index / 2) >0 }"  alt="img.id">
     </div>
   </div>
 </template>
