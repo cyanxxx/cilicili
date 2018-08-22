@@ -23,16 +23,19 @@
 <script>
 import faker from "@/assets/faker"
 import { DEBUG } from '../api/config'
+  import { mapGetters, mapActions} from 'vuex'
 export default {
   data () {
     return{
       text: 'CILICILI',
       visible:  false,
       status: true,
-      bannerImg: []
+      bannerImg: [],
+      loadedIndex: 0
     }
   },
   computed:{
+    ...mapGetters(['downData']),
     height () {
       let height = document.documentElement.clientHeight;
       return height / 2;
@@ -42,23 +45,21 @@ export default {
     this.bannerImg = faker.bannerImgData();
     document.body.style.overflow = 'hidden';
   },
+  watch: {
+    downData(val) {
+        if(val){
+          this.finishLoad(this.loadedIndex)
+        }
+    }
+  },
   mounted () {
     this.$nextTick(() => {
-      let loadedIndex = 0;
       this.$refs.img.forEach((x) => {
         x.onload = ()=> {
-            loadedIndex++;
-            this.$refs.progress.style.width = 16 + parseInt(this.$refs.progress.style.width)+'%';
-            if(!DEBUG){
-              this.finishLoad(loadedIndex)
-            }
+            this.loadedIndex++
+            this.finishLoad(this.loadedIndex)
         }
       })
-      if(DEBUG){
-        setTimeout(()=>{
-          this.finishLoad(loadedIndex)
-        },600);
-      }
     })
   },
   methods: {
@@ -67,7 +68,7 @@ export default {
       document.documentElement.scrollTop = height;
     },
     finishLoad(loadedIndex) {
-      if(loadedIndex == this.bannerImg.length){
+      if(loadedIndex == this.bannerImg.length && this.downData){
         document.body.style.overflowY = 'auto';
         this.$refs.progress.style.width = 100 + '%';
         this.status = false;

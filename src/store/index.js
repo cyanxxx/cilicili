@@ -6,11 +6,12 @@ import video from './modules/video'
 import user from './modules/user'
 import live from './modules/live'
 import timeLineList from './modules/timeLineList'
+import main from './modules/main'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    spColum,comment,video,user,timeLineList,live
+    spColum, comment, video, user, timeLineList, live, main
   }
 })

@@ -12,17 +12,9 @@ const formatData = (data) => {
   return data;
 }
 
-
-export function fetchList(query) {
-  return request({
-    url: '/article/list',
-    method: 'get',
-    params: query
-  })
-}
 export default{
   getData (cb) {
-    request.get(API_ROUTER_CONFIG.live).then(res => {
+    return request.get(API_ROUTER_CONFIG.live).then(res => {
       let data = formatData(res.data.recommend)
       cb(data)
     })

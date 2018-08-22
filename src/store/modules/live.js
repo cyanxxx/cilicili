@@ -7,7 +7,7 @@ const getters = {
 }
 const actions = {
   getliveItem ({ commit }) {
-    live.getData(items => commit('setLiveItem',items))
+    return live.getData(items => commit('setLiveItem',items))
   }
 }
 const mutations = {

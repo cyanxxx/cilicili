@@ -39,12 +39,18 @@
       }
     },
     computed:{
-      ...mapGetters(['preSpItem', 'liveItem']),
+      ...mapGetters(['preSpItem', 'liveItem','downData']),
     },
     created () {
       this.patitionImgData = faker.patitionImgData();
-      this.getliveItem();
-      this.getSpItem();
+      var live = this.getliveItem();
+      var sp = this.getSpItem();
+      Promise.all([live,sp]).then(()=>{
+        console.log("finish")
+        this.$store.commit('okData')
+      })
+
+
     },
     methods: {
       ...mapActions(['getSpItem', 'getliveItem'])
