@@ -33,16 +33,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @mixin placeholder($color) {
-    &::-webkit-input-placeholder {color:$color}
-    &:-moz-placeholder           {color:$color}
-    &::-moz-placeholder          {color:$color}
-    &:-ms-input-placeholder      {color:$color}
-  }
-  $color:#1fb5ad;
+@import '@/style/_variable.scss';
+@mixin placeholder($theme-color) {
+  &::-webkit-input-placeholder {color:$theme-color}
+  &:-moz-placeholder           {color:$theme-color}
+  &::-moz-placeholder          {color:$theme-color}
+  &:-ms-input-placeholder      {color:$theme-color}
+}
   .room{
     .title{
-    background: $color;
+    background: $theme-color;
     padding:7px 16px;
     padding-top:1px;
     border-radius: 10px;
@@ -52,7 +52,7 @@ export default {
   .danmu{
     margin-top: -10px;
     width: 100%;
-    background: $color;
+    background: $theme-color;
     padding:25px 16px;
     padding-top:35px;
     border-radius: 10px;
@@ -71,7 +71,7 @@ export default {
     }
     button{
       float: right;
-      background: $color;
+      background: $theme-color;
       padding:7px 16px;
       border-radius: 4px;
       color: #fff;

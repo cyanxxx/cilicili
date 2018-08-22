@@ -1,4 +1,4 @@
-import comment from '../../api/comment'
+import comment from '@/api/comment'
 
 const state = {
   comments: [],

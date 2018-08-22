@@ -9,7 +9,7 @@
       </div>
       <button class="login" v-on:click="oauth">登录</button>
     </div>
-    <div class="overlay" :style="{ width: width+'px' ,height:height+'px'}" @click="closeModal"></div>
+    <div class="overlay" :style="{ width: width+'px' ,height:height+'px'}" @click="$emit('close-modal')"></div>
   </div>
 
 </template>
@@ -46,53 +46,53 @@ export default {
     this.height =  document.documentElement.clientHeight;
   },
   methods:{
-    ...mapMutations({close:'closeModal'}),
     closeModal() {
       this.close();
     },
     oauth() {
-      this.$router.push({name:'login'})
+      console.log(this.$route)
+      this.$router.push({name:'login',query:{redirect:this.$route.fullPath}})
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .modal{
+.modal{
+  position: absolute;
+  width: 450px;
+  height: 150px;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color:#777;
+  background: #fff;
+  box-shadow: 3px 3px 7px  rgba(0,0,0,0.3);
+  z-index: 999;
+  .header{
+    background: #f1f1f1;
+    padding: 7px;
+  }
+  .content{
+    padding: 7px;
+  }
+  .login{
     position: absolute;
-    width: 450px;
-    height: 150px;
-    top:50%;
+    bottom: 16px;
     left: 50%;
-    transform: translate(-50%,-50%);
-    color:#777;
-    background: #fff;
-    box-shadow: 3px 3px 7px  rgba(0,0,0,0.3);
-    z-index: 999;
-    .header{
-      background: #f1f1f1;
-      padding: 7px;
-    }
-    .content{
-      padding: 7px;
-    }
-    .login{
-      position: absolute;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      color:#fff;
-      background: #1fb5ad;
-      border-radius: 4px;
-      padding: 10px 16px;
-      border:0;
-      outline: 0;
-    }
+    transform: translateX(-50%);
+    color:#fff;
+    background: #1fb5ad;
+    border-radius: 4px;
+    padding: 10px 16px;
+    border:0;
+    outline: 0;
   }
-  .overlay{
-    position: fixed;
-    top:0;
-    left:0;
-    background: rgba(0,0,0,0.6);
-  }
+}
+.overlay{
+  position: fixed;
+  top:0;
+  left:0;
+  background: rgba(0,0,0,0.6);
+}
 </style>

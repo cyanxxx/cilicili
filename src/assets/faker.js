@@ -1,8 +1,8 @@
 //导入数据
-import bannerImgData from "./bannerImg.json"
-import patitionImgData from "./patition.json"
-import articlesData from "./articles.json"
-import videosData from "./videos.json"
+import bannerImgData from "./json/bannerImg.json"
+import patitionImgData from "./json/patition.json"
+import articlesData from "./json/articles.json"
+import videosData from "./json/videos.json"
 
 //事先把编译后的资源作为一个模板加载进来
 var banner_images = require.context('./pic/banner', false, /\.(png|jpg|gif|svg)$/)

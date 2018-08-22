@@ -7,20 +7,16 @@
 </template>
 
 <script>
-import BackTop from '../components/BackTop.vue'
-import SpWrapper from '../components/SpWrapper.vue'
+import BackTop from '@/components/BackTop.vue'
+import SpWrapper from './components/SpWrapper.vue'
 export default {
-  components: {
-    SpWrapper,
-    BackTop
-  },
-
+  components: {SpWrapper, BackTop}
 }
 </script>
 
 
 <style lang="scss" scoped>
-  .spwrapper{
-    position: relative;
-  }
+.spwrapper{
+  position: relative;
+}
 </style>

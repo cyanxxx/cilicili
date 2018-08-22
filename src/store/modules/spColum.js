@@ -1,4 +1,4 @@
-import sp from '../../api/spColum'
+import sp from '@/api/spColum'
 const state = {
   spItem:[]
 }

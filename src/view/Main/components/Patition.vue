@@ -27,28 +27,28 @@
   }
 </script>
 <style lang="scss" scoped>
-  .menu{
-    margin-right: -110px;
-    overflow:hidden;
-    >.list{
-      float: left;
-      margin-right: 110px;
-      margin-bottom: 50px;
+.menu{
+  margin-right: -110px;
+  overflow:hidden;
+  >.list{
+    float: left;
+    margin-right: 110px;
+    margin-bottom: 50px;
+    >a{
+      display: block;
+    }
+    img{
+      width: 310px;
+      height: 174px;
+    }
+    >.text{
+      padding: 16px 0;
+      font-weight: bold;
       >a{
-        display: block;
-      }
-      img{
-        width: 310px;
-        height: 174px;
-      }
-      >.text{
-        padding: 16px 0;
-        font-weight: bold;
-        >a{
-          color:#fff;
-          text-decoration: none;
-        }
+        color:#fff;
+        text-decoration: none;
       }
     }
   }
+}
 </style>

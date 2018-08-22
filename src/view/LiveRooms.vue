@@ -21,7 +21,6 @@
       </div>
       <div class="next" v-show="current!=totalPage" @click="current++ && turnTo(current)">&gt</div>
     </div>
-
   </div>
 </template>
 
@@ -62,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color:#1fb5ad;
+@import '@/style/_variable.scss';
 @mixin jiantou($radius) {
   position: absolute;
   background: #1fb5ad;
@@ -105,7 +104,7 @@ $color:#1fb5ad;
       transition: all .3s cubic-bezier(.25,.1,.25,1);
       .live{
         float: left;
-        color:$color;
+        color:$theme-color;
         margin-left:24px;
         position: relative;
         .overlay{
@@ -118,7 +117,7 @@ $color:#1fb5ad;
           .content{opacity: 0;padding: 10px;};
           cursor:pointer;
           &:hover{
-            border: 2px solid $color;
+            border: 2px solid $theme-color;
             background: transparent;
             .content{
               opacity: 1;
@@ -127,7 +126,6 @@ $color:#1fb5ad;
               bottom:0;
               background: #000;
               width: 100%;
-
               .title{
                 font-weight: bold;
                 margin: 7px 0;

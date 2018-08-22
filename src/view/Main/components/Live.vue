@@ -21,7 +21,6 @@
 
 </template>
 <script>
-import { mapGetters } from 'vuex'
   export default {
     data () {
       return {
@@ -30,8 +29,8 @@ import { mapGetters } from 'vuex'
         viewableHeight:0,
       }
     },
+    props:['lists'],
     computed: {
-      ...mapGetters({lists: 'liveItem'}),
       scrollableHeight(){
         return this.viewableHeight - this.scrollHeight
       },
@@ -107,7 +106,7 @@ import { mapGetters } from 'vuex'
   }
 </script>
 <style lang="scss" scoped>
-$color:#1fb5ad;
+@import '@/style/_variable.scss';
 @mixin leftTop {
   position: absolute;
   top:0;
@@ -123,7 +122,7 @@ a{
   user-select: none;
 }
 .box{
-  border: 2px solid $color;
+  border: 2px solid $theme-color;
   width: 100%;
   height:478px;
   overflow: hidden;
@@ -133,23 +132,23 @@ a{
     float: right;
     width: 25px;
     height: 100%;
-    border-left: 2px solid $color;
+    border-left: 2px solid $theme-color;
     position: relative;
     >.scroll{
       @include leftTop;
       width: 100%;
       height: 80px;
-      background: $color;
+      background: $theme-color;
     }
   }
   >.list{
     width: calc( 100% - 25px );
     @include leftTop;
-    color:$color;
+    color:$theme-color;
     .item{
       transition: all .2s ease-in;
       &:hover{
-        background: $color;
+        background: $theme-color;
         color:#fff;
       }
     }
@@ -177,11 +176,11 @@ a{
     >a{
       width: 100%;
       display: block;
-      border-bottom: 2px solid $color;
+      border-bottom: 2px solid $theme-color;
       height:115px;
       line-height: 115px;
       padding-left: 16px;
-      color:$color;
+      color:$theme-color;
       position: relative;
     }
   }

@@ -1,7 +1,6 @@
-import axios from 'axios'
+import request from '@/utils/request'
 import rule from './public'
-import { HOST_CONCIG, API_ROUTER_CONFIG, DEBUG } from './config'
-import fakeData from '../../static/videoGroup.json'
+import { API_ROUTER_CONFIG } from './config'
 var formatKey = {
   bangumi:"动画",
   movie:"电影",
@@ -29,15 +28,9 @@ const formatData = (res)=> {
 }
 export default{
   getVideo(cb){
-    if(DEBUG){
-      let data = formatData(fakeData);
+    request.get(API_ROUTER_CONFIG.video).then(res=>{
+      let data = formatData(res.data);
       cb(data)
-    }else{
-      axios.get(HOST_CONCIG.mock+API_ROUTER_CONFIG.video).then(res=>{
-        let data = formatData(res.data);
-        cb(data)
-      })
-    }
-
+    })
   }
 }

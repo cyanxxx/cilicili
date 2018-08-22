@@ -30,7 +30,7 @@
 
 <script>
 import { getUrlKey } from '../utils/getString'
-import { getVideoId, clearVideoId } from '../utils/localStore'
+import { getRedirect } from '../utils/localStore'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { HOST_CONCIG, KEY_CONFIG, DEBUG } from '../api/config'
 
@@ -45,15 +45,15 @@ export default {
     }
   },
   computed: {
-  ...mapGetters(['login','videoId']),
+  ...mapGetters(['login']),
     //得到返回的code去换token
-      code: function() {
-          if (this.oauthCode) {
-              return true
-          } else {
-              return false
-          }
-      },
+    code: function() {
+        if (this.oauthCode) {
+            return true
+        } else {
+            return false
+        }
+    },
   },
   mounted() {
     //检查是否拿到了code
@@ -68,26 +68,12 @@ export default {
   },
   methods: {
     ...mapActions(['signIn']),
-    ...mapMutations(['setVideoId']),
     checkUrl() {
-        if (this.code) {
-            this.signIn(this.oauthCode);
-            var videoId = getVideoId();
-          if(videoId){
-            this.goBackToVideo(videoId);
-          }else{
-            this.getBackToRoast();
-          }
-        }
-
-    },
-    getBackToRoast() {
-      this.$router.replace({name:'roast'});
-    },
-    goBackToVideo(videoId) {
-      this.setVideoId(videoId);
-      clearVideoId();
-      this.$router.replace({name:'video',params:{id:this.videoId}});
+      if (this.code) {
+        this.signIn(this.oauthCode);
+        console.log(getRedirect())
+        this.$router.replace({path:getRedirect()});
+      }
     },
     oauth() {
       if(DEBUG){
@@ -99,7 +85,6 @@ export default {
         //授权登陆页面
         window.open(oauthUrl + '?client_id=' + client_id + '&redirect_uri=' + redirect_uri, "_self", "", true);
       }
-
     },
     check(val,err) {
       if(!val){
@@ -117,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color:#1fb5ad;
+@import '@/style/_variable.scss';
 $darkColor:#1ca099;
 @mixin middle {
   display: inline-block;
@@ -129,7 +114,7 @@ $darkColor:#1ca099;
 }
 @mixin space {
   .main{
-    color:$color;
+    color:$theme-color;
     font-size:20px;
     margin-bottom:5px;
   }
@@ -181,7 +166,6 @@ form{
     }
     .error{
      color:#32323a;
-     // display:none;
      position: absolute;
      top:-30px;
      left:0;
@@ -205,7 +189,7 @@ form{
   .submit{
     display: inline-block;
     cursor:pointer;
-    background:$color;
+    background:$theme-color;
     color:#fff;
     outline:0;
     border:0;

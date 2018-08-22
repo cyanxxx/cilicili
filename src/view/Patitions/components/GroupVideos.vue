@@ -24,6 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/_variable.scss';
 .box{
   .lists{
     .videoLink{
@@ -56,7 +57,7 @@ export default {
             top:50%;
             left:50%;
             transform: translate(-50%,-50%);
-            color:#1fb5ad;
+            color:$theme-color;
             font-weight: bold;
           }
         }

@@ -1,4 +1,4 @@
-import live from '../../api/live'
+import live from '@/api/live'
 const state = {
   liveItem:[]
 }

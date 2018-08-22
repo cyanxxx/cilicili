@@ -19,16 +19,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .down{
-    position: fixed;
-    right: 30px;
-    bottom: 16px;
-    cursor: pointer;
-    .icon-58{
-      font-weight: bold;
-      font-size: 32px;
-      color:#1fb5ad;
-    }
+@import '@/style/_variable.scss';
+.down{
+  position: fixed;
+  right: 30px;
+  bottom: 16px;
+  cursor: pointer;
+  .icon-58{
+    font-weight: bold;
+    font-size: 32px;
+    color: $theme-color;
   }
-  .icon-58:before { content: "\e645"; }
+}
+.icon-58:before { content: "\e645"; }
 </style>

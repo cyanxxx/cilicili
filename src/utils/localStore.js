@@ -1,17 +1,18 @@
+const sessionStorage = window.sessionStorage
+const localStorage = window.localStorage
+
 export const saveToken = (token) => {
-  const localStorage = window.localStorage
   try {
-    localStorage.setItem('token', JSON.stringify(token))
+    sessionStorage.setItem('token', JSON.stringify(token))
 
   } catch (error) {
-
+    console.log(console.error)
   }
 }
 
 export const getToken = () => {
-  const localStorage = window.localStorage
   try {
-    const token = localStorage.getItem('token');
+    const token = JSON.parse(sessionStorage.getItem('token'));
     if (!token) {
       return null;
     }
@@ -24,10 +25,9 @@ export const getToken = () => {
 }
 
 export const saveUserInfo= (userInfo) => {
-  const localStorage = window.localStorage
   try {
     //json格式字符串
-    localStorage.setItem('userInfo', JSON.stringify(userInfo))
+    sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
 
   } catch (error) {
 
@@ -35,9 +35,8 @@ export const saveUserInfo= (userInfo) => {
 }
 
 export const getUser = () => {
-  const localStorage = window.localStorage
   try {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = sessionStorage.getItem('userInfo');
     if (!userInfo) {
       return null;
     }
@@ -49,38 +48,26 @@ export const getUser = () => {
   }
 }
 
-export const saveVideoId= (videoId) => {
-  const localStorage = window.localStorage
+export const saveRedirect= (redirect) => {
   try {
-    //json格式字符串
-    localStorage.setItem('videoId',videoId)
+    localStorage.setItem('redirect',redirect)
+
   } catch (error) {
-    return null;
+    console.log(console.error)
   }
 }
 
-export const clearVideoId = () => {
-  const localStorage = window.localStorage
-    if (localStorage.getItem('videoId')) {
-      localStorage.removeItem('videoId');
-    }
-}
-
-export const getVideoId = () => {
-  const localStorage = window.localStorage;
-  const videoId = localStorage.getItem('videoId');
-  return   videoId;
+export const getRedirect = () => {
   try {
-    const videoId = localStorage.getItem('videoId');
-    cosnole.log(videoId)
-    if (!videoId) {
+    const redirect = localStorage.getItem('redirect');
+    if (!redirect) {
       return null;
     }
-    cosnole.log(videoId)
-    return videoId;
+    return redirect;
 
   } catch (error) {
 
     return null;
   }
+
 }

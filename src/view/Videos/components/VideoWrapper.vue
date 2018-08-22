@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import faker from "../../static/faker"
+import faker from "@/assets/faker"
 export default {
   data () {
     return{
@@ -23,18 +23,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .top{
-    margin: 20px 0;
-    h2{
-      float: left;
-      margin: 0;
-      line-height: 60px;
-      color:#fff
-    }
+.top{
+  margin: 20px 0;
+  h2{
+    float: left;
+    margin: 0;
+    line-height: 60px;
+    color:#fff
   }
-  iframe{
-    width: 100%;
-    height: 564px;
-  }
+}
+iframe{
+  width: 100%;
+  height: 564px;
+}
 
 </style>

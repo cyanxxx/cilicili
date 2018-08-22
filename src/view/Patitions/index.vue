@@ -13,25 +13,25 @@
 </template>
 
 <script>
-import GroupVideos from '../components/GroupVideos.vue'
-import BackTop from '../components/BackTop.vue'
-import { mapGetters } from 'vuex'
+import GroupVideos from './components/GroupVideos.vue'
+import BackTop from '@/components/BackTop.vue'
+import video from '@/api/video'
 export default {
   data() {
     return{
        laest : '最新更新',
+       areaVideos:[]
     }
 
   },
-  computed: mapGetters({
-    areaVideos: "lists"
-  }),
   components: {
     GroupVideos,BackTop
   },
   created() {
     this.$bar.start();
-    this.$store.dispatch('getVideos')
+    video.getVideo((data) => {
+      this.areaVideos = data
+    })
   },
   methods:{
     toTop() {
@@ -46,10 +46,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color : #1fb5ad;
+@import '@/style/_variable.scss';
 .video{
   .laest,.title{
-    background:$color;
+    background:$theme-color;
     display: flex;
     width: 248px;
     height: 142px;

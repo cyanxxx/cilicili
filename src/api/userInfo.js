@@ -1,28 +1,43 @@
 import axios from 'axios';
 import { HOST_CONCIG, API_ROUTER_CONFIG, DEBUG } from './config'
-import fakeData from '../../static/roast.json'
-import fakeUserData from '../../static/userInfo.json'
+import fakeData from '@/assets/json/roast.json'
+import fakeUserData from '@/assets/json/userInfo.json'
+import store from '../store'
 
-export const getUserInfo = (accesstoken, userId, okCallback, errorCallback) => {
+const service = axios.create({
+  baseURL: process.env.BASE_API, // api的base_url
+  timeout: 5000 // 请求超时时间
+})
+
+// request拦截器
+service.interceptors.request.use(config => {
+  const token = store.getters.token.access_token
+  if (token) {
+    console.log(config.params)
+    Object.assign(config.params, {access_token : token})
+  }
+  return config
+}, error => {
+  // Do something with request error
+  console.log(error) // for debug
+  Promise.reject(error)
+})
+
+export const getUserInfo = (userId, okCallback, errorCallback) => {
   if(DEBUG){
     okCallback(fakeUserData);
   }else{
-    var request_data = {
-        access_token: accesstoken,
-        //名字和uid二选其一即可
-        uid: userId,
-    }
     var config = {
         method: 'get',
         url: API_ROUTER_CONFIG.userinfo,
         baseURL: HOST_CONCIG.host,
-        params: request_data,
+        params: {uid: userId},
         headers: {
             'Content-Type': 'application/json'
         }
     }
 
-    axios(config)
+    service(config)
         .then(function (response) {
             okCallback(response.data)
         })
@@ -33,14 +48,13 @@ export const getUserInfo = (accesstoken, userId, okCallback, errorCallback) => {
 
 }
 
-export const getTimeLine = (accesstoken, page, okCallback, errorCallback) => {
+export const getTimeLine = (page, okCallback, errorCallback) => {
   if(DEBUG){
     okCallback(fakeData)
   }else{
     var request_data = {
-        access_token: accesstoken,
         count: 30,
-        page: page
+        ...page
     }
 
     var config = {
@@ -52,27 +66,18 @@ export const getTimeLine = (accesstoken, page, okCallback, errorCallback) => {
             'Content-Type': 'application/json'
         }
     }
-    axios(config)
-        .then(function (response) {
-            okCallback(response.data)
-        })
-        .catch(function (error) {
-            errorCallback(error)
-        })
+    return service(config)
   }
 }
 
 
-export const getWbComment = (accesstoken, page, id, okCallback, errorCallback) => {
-  // if(DEBUG){
-  //   //okCallback(fakeData)
-  // }else{
+export const getWbComments = (page, id, okCallback, errorCallback) => {
+    if(DEBUG){
+      okCallback(fakeData)
+    }else{
     var request_data = {
-        //access_token:'2.00LGl4DCvKGOIB015ec8b6440rYRs5',
-        page:page,
-        access_token: accesstoken,
+        ...page,...id,
         count:10,
-        id:id
     }
 
     var config = {
@@ -84,12 +89,7 @@ export const getWbComment = (accesstoken, page, id, okCallback, errorCallback) =
             'Content-Type': 'application/json'
         }
     }
-    axios(config)
-        .then(function (response) {
-            okCallback(response.data)
-        })
-        .catch(function (error) {
-            errorCallback(error)
-        })
-  // }
+    return service(config)
+
+   }
 }

@@ -28,47 +28,47 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import Pages from './Pages.vue'
-import * as DateUtils from '../utils/date-utils'
-import { formatDetails,formatUrl } from '../utils/getString'
+import { getWbComments} from '@/api/userInfo'
+import Pages from '@/components/Pages.vue'
+import * as DateUtils from '@/utils/date-utils'
+import { formatDetails,formatUrl } from '@/utils/getString'
 export default {
   data() {
       return{
         order:"时间",
-        comment:{}
+        comment:{},
+        wbCommentNums:10,
+        curPage:1
       }
   },
-  props: {
-    commentList:{
-      type: Object
-    },
-    id: {
-      type: Number
-    }
-  },
+  props: ['id'],
   computed:{
-    ...mapGetters([ 'weiboComments','wbCommentNums']),
+
   },
   created() {
-    this.comment = this.commentList;
+    this.loadComments();
   },
   components: { Pages },
   methods: {
-    ...mapActions(['getWbComments']),
+    loadComments: function() {
+      getWbComments({page:this.curPage,id:this.id}).then((res)=>{
+        console.log(res)
+        this.comment = res.data
+      })
+    },
     formatTime(time) {
       return DateUtils.format(time);
     },
     showInfo(param) {
-      this.getWbComments({...param,id:this.id}).then(data => {
-          this.comment = data;
-      })
+      this.curPage = param.page
+      this.loadComments();
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/_variable.scss';
 .comment_container {
   width: 98%;
   margin: 15px auto;
@@ -131,7 +131,7 @@ export default {
     text-align: right;
     margin-top: 10px;
     .comment {
-      background: #1fb5ad;
+      background: $theme-color;
       color: #fff;
       font-size: 14px;
       padding: 5px 12px;
@@ -142,15 +142,9 @@ export default {
     }
   }
 }
-
-
 .line {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   padding: 12px 16px;
 }
-
-
-
-
 </style>

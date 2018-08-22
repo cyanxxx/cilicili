@@ -55,31 +55,31 @@ export default {
            this.current = index;
            let param = {page:this.current}
            this.$emit('pageChange',param)
-
        }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-    $Color : #1fb5ad;
-    li{
-      display: inline-block;
-      padding: 10px;
-      border-radius: 4px;
-      color:  $Color;
-      border:1px solid $Color;
-      cursor: pointer;
-      margin-right: 6px;
-      animation: all .2s ease-in;
-      &.active{
-        background:$Color;
-        color:#fff;
-      }
-      &:hover{
-        background:$Color;
-          color:#fff;
-      }
-    }
+@import '@/style/_variable.scss';
+$theme-color : #1fb5ad;
+li{
+  display: inline-block;
+  padding: 10px;
+  border-radius: 4px;
+  color:  $theme-color;
+  border:1px solid $theme-color;
+  cursor: pointer;
+  margin-right: 6px;
+  animation: all .2s ease-in;
+  &.active{
+    background:$theme-color;
+    color:#fff;
+  }
+  &:hover{
+    background:$theme-color;
+      color:#fff;
+  }
+}
 
 </style>

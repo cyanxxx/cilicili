@@ -10,7 +10,7 @@ import Vuelazyload from 'vue-lazyload'
 import ProgressBar from './view/ProgressBar.vue'
 Vue.use(VueJsonp)
 Vue.use(Vuelazyload, {
-  loading: require('../static/pic/loading.svg')
+  loading: require('@/assets/pic/loading.svg')
 })
 
 Vue.config.productionTip = false

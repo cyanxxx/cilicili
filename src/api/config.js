@@ -5,18 +5,11 @@ const key_config = {
     redirect_uri: 'http://127.0.0.1:8080/login'
 }
 
-// const key_config = {
-//     app_key: '1037703853',
-//     app_secret: '3aff8f495098c4ab0455ef676149d159',
-//     redirect_uri: 'https://mighty-forest-61618.herokuapp.com/login'
-// }
-
 const host_config = {
     local: 'http://127.0.0.1:8080/',
     //代理服务器
     host: 'http://127.0.0.1:3000/',
     oauth: 'https://open.weibo.cn/oauth2/authorize',
-    mock: 'https://www.easy-mock.com/mock/5ae9e5cdbd50881f100270eb/s'
 }
 
 const api_router_config = {

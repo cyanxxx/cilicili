@@ -3,18 +3,11 @@
     <banner v-if="firstLoad"></banner>
     <div class="container">
       <!-- 导航区 -->
-      <ul class="nav">
-        <router-link tag="li" :to="{ name:'main' }" exact>首页</router-link>
-        <router-link tag="li" :to="{ name:'patitons' }" >分区</router-link>
-        <router-link tag="li" :to="{ name:'spColums' }" >专栏</router-link>
-        <router-link tag="li" :to="{ name:'liveRooms'}" >直播</router-link>
-        <router-link tag="li" :to="{ name:'roast'}" >吐槽</router-link>
-      </ul>
+      <my-header :items="routes"></my-header>
       <transition name="fade">
         <keep-alive>
           <router-view class="view"></router-view>
         </keep-alive>
-
       </transition>
 
     </div>
@@ -22,29 +15,27 @@
 </template>
 
 <script>
-let img =  require.context('../static/pic',false, /\.(png|jpg|gif|svg)$/)
-import font from '../static/fonts/font.css'
-
+let img =  require.context('@/assets/pic',false, /\.(png|jpg|gif|svg)$/)
 import Banner from './components/Banner.vue'
+import myHeader from './components/Header.vue'
+import "./style/font.scss";
 export default {
   name: 'App',
   components: {
-    Banner
+    Banner, myHeader
   },
   data() {
     return {
       firstLoad: false,
     }
   },
-
+  computed:{
+    routes() {
+      return this.$router.options.routes
+    }
+  },
   created() {
-    window.localStorage.setItem('height',document.documentElement.clientHeight);
-    window.localStorage.setItem('width',document.documentElement.clientWidth);
-
     this.firstLoad = this.$route.name == 'main'?   true : false;
-    this.$store.dispatch('getSpItem');
-    this.$store.dispatch('getliveItem');
-
   },
   watch: {
     '$route'(to, from) {
@@ -53,7 +44,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" >
+<style lang="scss">
 #app{
   margin-bottom: 20px;
 }
@@ -62,11 +53,17 @@ export default {
   margin: auto;
   .nav{
     text-align: center;
+    display: flex;
     >li{
-      padding: 0px 90px 10px;
-      display: inline-block;
+      padding:16px 0;
+      flex: 1;
       color:#fff;
       cursor:pointer;
+    }
+    a{
+      display: block;
+      text-decoration: none;
+      color:#fff;
     }
     .active{
       border-bottom: 2px solid #1fb5ad

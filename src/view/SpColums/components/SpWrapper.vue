@@ -63,31 +63,31 @@ a{
     opacity: 0.6;
   }
 }
-  .sp{
-    .list{
-      background: #1fb5ad;
-      display: block;
-      padding: 16px;
-      margin-bottom: 20px;
-      transition: all .8s ease-in;
-      transform-style: preserve-3d;
-      transform-origin: center bottom;
-      transform: rotateX(-50deg) translateZ(60px);
-      opacity: 0;
-      &.active{
-        transform: rotateX(0deg) translateZ(0px);
-        opacity: 1;
+.sp{
+  .list{
+    background: #1fb5ad;
+    display: block;
+    padding: 16px;
+    margin-bottom: 20px;
+    transition: all .8s ease-in;
+    transform-style: preserve-3d;
+    transform-origin: center bottom;
+    transform: rotateX(-50deg) translateZ(60px);
+    opacity: 0;
+    &.active{
+      transform: rotateX(0deg) translateZ(0px);
+      opacity: 1;
+    }
+    .content{
+      @include to-drak;
+      .category{
+        color:#fafafa;
+        font-size: 14px;
       }
-      .content{
-        @include to-drak;
-        .category{
-          color:#fafafa;
-          font-size: 14px;
-        }
-        >div{
-          margin-bottom: 16px;
-        }
+      >div{
+        margin-bottom: 16px;
       }
     }
   }
+}
 </style>

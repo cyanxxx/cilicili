@@ -14,67 +14,75 @@
           <a>{{ list.userName }}</a>
           <div class="text">{{ list.content }}</div>
           <div class="subicon">
-            <i class="icon dianzan " @click="toGood(list.pid,index)" :class="{active: goodList[list.pid]}"></i>
+            <i class="iconfont icon-zan2" @click="toGood(list.pid,index)" :class="{active: goodList[list.pid]}"></i>
             <span>{{ list.goods }}</span>
-            <i class="icon huifu" @click="reply(list.userName)"></i>
+            <i class="iconfont icon-icon" @click="reply(list.userName)"></i>
             <span>回复</span>
           </div>
         </div>
       </div>
-      <pages @pageChange="showInfo" :totalPages="pages"></pages>
+      <pages @pageChange="showInfo" :totalPages="totalPages"></pages>
     </div>
-    <modal v-if="needLogin && open" :top='top'></modal>
+    <modal v-if="!login && open" :top='top' @close-modal="open=false"></modal>
   </div>
 
 </template>
 
 <script>
-import Pages from './Pages.vue'
-import Modal from './Modal.vue'
-import { saveVideoId } from '../utils/localStore'
+import Pages from '@/components/Pages.vue'
+import Modal from '@/components/Modal.vue'
+import { saveRedirect } from '@/utils/localStore'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import commentData from '@/api/comment'
 export default {
   data() {
     return {
       goodList: {},
       content: '',
-      top:0
+      top:0,
+      totalPages:1,
+      curPage:1,
+      lists:[],
+      open:false
     }
   },
-  components: {Pages,Modal},
+  components: {Pages, Modal},
   computed: {
-    ...mapGetters({lists:'comments',open:'open',needLogin:'needLogin',login:'login',token:'token',videoId:'videoId',userName:'userName',userImg:'userImg',pages:'pages'}),
+    ...mapGetters(['login','token','userInfo']),
   },
-  mounted() {
-    if(this.login){
-        this.getUser();
-    }
-  },
-  watch:{
-    login:function(val){
-      if(val){
-        this.getUser();
-      }
-    }
+  created() {
+    this.getComments();
   },
   methods: {
-    ...mapMutations(['openModal','setVideoId']),
-    ...mapActions(['getUser', 'getComments','postComments']),
+    ...mapActions(['getUser']),
+    formData() {
+      let message = {};
+      message.userName = this.userInfo.userName;
+      message.content = this.content;
+      message.goods = 0;
+      message.faceImg = this.userInfo.userImg;
+      this.lists.unshift(message)
+      commentData.postComment(message);
+      this.content='';
+    },
     send () {
       if(this.login){
-        let message = {};
-        message.userName = this.userName;
-        message.content = this.content;
-        message.goods = 0;
-        message.faceImg = this.userImg;
-        this.postComments(message);
-        this.content='';
+        if(!this.userName){
+          this.getUser().then(this.formData());
+        }else{
+          this.formData()
+        }
       }else{
         this.setTop();
-        this.openModal();
-        var id =  this.$route.params.id;
-        saveVideoId(id);
+        this.open = true;
+        saveRedirect(this.$route.fullPath);
       }
+    },
+    getComments() {
+      commentData.getComments({page:this.curPage},(data)=>{
+        this.totalPages = data.totalcount;
+        this.lists = data.comment
+      })
     },
     toGood(pid, index) {
         if (this.goodList[pid]){
@@ -93,14 +101,15 @@ export default {
       this.top = top + height / 2;
     },
     showInfo(param) {
-      this.getComments(param)
+      this.curPage = param.page;
+      this.getComments();
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$color:#1fb5ad;
+@import '@/style/_variable.scss';
 .editComment{
   margin-bottom: 20px;
   .commet{
@@ -108,7 +117,7 @@ $color:#1fb5ad;
     color:#fff;
   }
   .commetArea{
-    border: 3px solid $color;
+    border: 3px solid $theme-color;
     padding: 10px;
     width: 100%;
     height: 200px;
@@ -124,7 +133,7 @@ $color:#1fb5ad;
     float: right;
     display: block;
     color:#fff;
-    background: $color;
+    background: $theme-color;
     outline: none;
     padding: 7px 22px;
     border: 0;
@@ -138,23 +147,7 @@ $color:#1fb5ad;
     vertical-align: middle;
   }
 }
-.icon{
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  overflow: hidden;
-  cursor:pointer;
-  vertical-align: middle;
-}
-.dianzan {
-  background: url(../../static/pic/sprite.png)  -20px -0px no-repeat;
-  &.active{
-    background-position: -0px -0px;
-  }
-}
-.huifu{
-  background: url(../../static/pic/sprite.png) -40px -0px no-repeat;
-}
+
   .comments_container{
     margin-top: 20px;
     .lists{
@@ -171,7 +164,7 @@ $color:#1fb5ad;
       }
       .info{
         margin-left: 80px;
-        background: $color;
+        background: $theme-color;
         padding:16px;
         min-height: 60px;
         .text{

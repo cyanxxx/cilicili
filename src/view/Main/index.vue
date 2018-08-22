@@ -8,12 +8,12 @@
     <div class="clearFix">
 
       <!-- 专栏 -->
-      <sp-colum class="col-5 spcol">
+      <sp-colum class="col-5 spcol" :lists="preSpItem">
         <h2>专栏</h2>
       </sp-colum>
-      
+
       <!-- 直播 -->
-      <live class="col-5 live" :lists="liveData">
+      <live class="col-5 live" :lists="liveItem">
         <h2>直播</h2>
       </live>
     </div>
@@ -21,11 +21,11 @@
 
 </template>
 <script>
-  import Patition from '../components/Patition.vue'
-  import SpColum from '../components/SpColum.vue'
-  import Live from '../components/Live.vue'
-  import faker from "../../static/faker"
-
+  import Patition from './components/Patition.vue'
+  import SpColum from './components/SpColum.vue'
+  import Live from './components/Live.vue'
+  import faker from "@/assets/faker"
+  import { mapGetters, mapActions} from 'vuex'
   export default {
     components:{
       Patition,
@@ -35,12 +35,19 @@
     data () {
       return {
         patitionImgData: [],
-        liveData: [],
-        spColData: []
+        liveData: []
       }
+    },
+    computed:{
+      ...mapGetters(['preSpItem', 'liveItem']),
     },
     created () {
       this.patitionImgData = faker.patitionImgData();
+      this.getliveItem();
+      this.getSpItem();
+    },
+    methods: {
+      ...mapActions(['getSpItem', 'getliveItem'])
     }
 }
 </script>

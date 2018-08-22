@@ -1,7 +1,6 @@
-import axios from 'axios'
+import request from '@/utils/request'
 import rule from './public'
-import { HOST_CONCIG, API_ROUTER_CONFIG, DEBUG } from './config'
-import fakeData from '../../static/live.json'
+import { API_ROUTER_CONFIG } from './config'
 const formatData = (data) => {
   data.forEach(val =>{
     for (var key in val) {
@@ -12,17 +11,20 @@ const formatData = (data) => {
   })
   return data;
 }
+
+
+export function fetchList(query) {
+  return request({
+    url: '/article/list',
+    method: 'get',
+    params: query
+  })
+}
 export default{
   getData (cb) {
-    if(DEBUG){
-      let data = formatData(fakeData.recommend)
+    request.get(API_ROUTER_CONFIG.live).then(res => {
+      let data = formatData(res.data.recommend)
       cb(data)
-    }else{
-      axios.get(HOST_CONCIG.mock+API_ROUTER_CONFIG.live).then(res => {
-        let data = formatData(res.data.recommend)
-        cb(data)
-      })
-    }
-
+    })
   }
 }

@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss">
-$color:#1fb5ad;
+@import '@/style/_variable.scss';
 .hover_img{
   padding-bottom:16px;
   background: #fff;
@@ -144,13 +144,13 @@ $color:#1fb5ad;
       margin-right:10px;
     }
     .follow{
-      background: $color;
+      background: $theme-color;
       color: #fff;
     }
     .chat{
-      border:1px solid $color;
+      border:1px solid $theme-color;
       background: #fff;
-      color:$color;
+      color:$theme-color;
     }
   }
 }

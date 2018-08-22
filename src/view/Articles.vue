@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import faker from '../../static/faker'
+import faker from '@/assets/faker'
 export default {
   data () {
     return{
@@ -28,23 +28,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .articles{
-    margin-top: 60px;
-    h2{text-align: center;}
-    .wrapper{
-      .author,.text{
-        float: left;
-      }
-      .author{
-        color:#1fb5ad;
-        text-align: center;
-      }
-      .text{
-        margin-left: 30px;
-        color:#fff;
-        width: calc(100% - 75px);
-      }
+.articles{
+  margin-top: 60px;
+  h2{text-align: center;}
+  .wrapper{
+    .author,.text{
+      float: left;
+    }
+    .author{
+      color:#1fb5ad;
+      text-align: center;
+    }
+    .text{
+      margin-left: 30px;
+      color:#fff;
+      width: calc(100% - 75px);
     }
   }
+}
 
 </style>
