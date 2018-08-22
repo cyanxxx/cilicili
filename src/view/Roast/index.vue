@@ -42,18 +42,20 @@ export default {
   computed: {
     ...mapGetters([ 'login', "hoverOpen"])
   },
+  watch:{
+    login:function(val){
+      var vue = this;
+      if(val){
+      this.loadData()
+      }
+    }
+  },
   //keep-alive 组件激活时调用。
   activated() {
+    console.log('hi')
     var vue = this;
     if (this.login) {
-      this.$bar.start();
-      getTimeLine({
-        page: 1}).then((res)=>{
-          console.log(res)
-          this.lists = res.data.statuses
-          this.$bar.finish();
-        })
-      window.addEventListener('scroll', this.scrollBar)
+      this.loadData()
     } else {
       this.open = true;
       saveRedirect(this.$route.fullPath);
@@ -66,7 +68,17 @@ export default {
   },
   methods: {
     ...mapMutations(['saveHoverData', 'openHover', 'closeHover']),
-    hoverImg: function(data, e) {
+    loadData() {
+      this.$bar.start();
+      getTimeLine({
+        page: 1}).then((res)=>{
+          console.log(res)
+          this.lists = res.data.statuses
+          this.$bar.finish();
+        })
+      window.addEventListener('scroll', this.scrollBar)
+    },
+    hoverImg(data, e) {
       if (this.timer) {
         clearTimeout(this.timer);
       }
@@ -82,7 +94,7 @@ export default {
       this.imgHeight = top;
 
     },
-    close: function() {
+    close() {
       this.timer = setTimeout(() => {
         this.closeHover()
       }, 500)

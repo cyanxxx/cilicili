@@ -38,6 +38,7 @@ export const getUserInfo = (userId, okCallback, errorCallback) => {
 
     service(config)
         .then(function (response) {
+          console.log(response)
             okCallback(response.data)
         })
         .catch(function (error) {

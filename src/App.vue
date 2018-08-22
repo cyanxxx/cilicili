@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <banner v-if="firstLoad" @finshImg="finshImg"></banner>
+    <banner v-if="firstLoad"></banner>
     <div class="container">
       <!-- 导航区 -->
       <my-header :items="routes"></my-header>
@@ -37,10 +37,10 @@ export default {
   created() {
     this.firstLoad = this.$route.name == 'main'?   true : false;
   },
-  methods:{
-    finshImg() {
-      
-    }
+  watch: {
+    '$route'(to, from) {
+      this.firstLoad = false;
+    },
   }
 }
 </script>

@@ -15,6 +15,7 @@ const formatData = (data) => {
 export default{
   getData (cb) {
     return request.get(API_ROUTER_CONFIG.live).then(res => {
+      console.log(res)
       let data = formatData(res.data.recommend)
       cb(data)
     })
