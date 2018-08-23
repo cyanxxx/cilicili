@@ -23,7 +23,7 @@
 <script>
 import faker from "@/assets/faker"
 import { DEBUG } from '../api/config'
-  import { mapGetters, mapActions} from 'vuex'
+import { mapGetters, mapActions} from 'vuex'
 export default {
   data () {
     return{
