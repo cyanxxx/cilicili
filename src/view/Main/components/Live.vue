@@ -152,6 +152,7 @@ a{
         color:#fff;
       }
     }
+    
     .tag{
       font-size: 32px;
       margin-right: 7px;
@@ -182,6 +183,20 @@ a{
       padding-left: 16px;
       color:$theme-color;
       position: relative;
+    }
+    @media screen and (max-width:414px){
+      .item{
+        display: flex;
+      }
+      .tag{
+        font-size: 16px;
+      }
+      .title{
+        width: auto;
+      }
+      .author{
+        bottom: 0;
+      }
     }
   }
 }

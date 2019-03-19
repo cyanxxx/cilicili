@@ -56,6 +56,15 @@ $height:88px;
     @include dot(75%);
     @include to-drak;
   }
+  @media screen and (max-width: 414px){
+     >.l-type{
+       display: none;
+     }
+     >.r-text{
+       float: none;
+       width: 100%;
+     }
+  }
 }
 
 </style>

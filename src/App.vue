@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <banner v-if="firstLoad"></banner>
+  <div id="k">
+    <banner v-if="!isMobile && firstLoad"></banner>
     <div class="container">
       <!-- 导航区 -->
       <my-header :items="routes"></my-header>
@@ -36,6 +36,7 @@ export default {
   },
   created() {
     this.firstLoad = this.$route.name == 'main'?   true : false;
+    this.isMobile = window.navigator.userAgent.indexOf('Mobile') !== -1;
   },
   watch: {
     '$route'(to, from) {
@@ -49,8 +50,12 @@ export default {
   margin-bottom: 20px;
 }
 .container{
-  width: 1160px;
-  margin: auto;
+  width: 100%;
+  @media screen and (min-width: 1160px) { 
+    width: 1160px;
+    margin: auto;
+  }
+  
   .nav{
     text-align: center;
     display: flex;
@@ -72,6 +77,9 @@ export default {
   .view{
     margin-top: 40px;
     transition: all .6s ease;
+     @media screen and (max-width: 1160px){
+       margin: 0 16px;
+     }
   }
   .fade-enter{
       opacity: 0;

@@ -60,7 +60,8 @@ export default {
 <style lang="scss" scoped>
 .modal{
   position: absolute;
-  width: 450px;
+  width: 100%;
+  max-width: 450px;
   height: 150px;
   top:50%;
   left: 50%;

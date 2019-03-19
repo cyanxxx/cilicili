@@ -80,11 +80,14 @@ a{
     }
     .content{
       @include to-drak;
+      
       .category{
         color:#fafafa;
         font-size: 14px;
       }
-      >div{
+      .brief{
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-bottom: 16px;
       }
     }

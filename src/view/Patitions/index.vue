@@ -62,6 +62,15 @@ export default {
       font-size: 26px;
     }
   }
+      @media screen and (max-width: 414px){
+       .title{
+        float: none;
+        margin: 26px auto;
+      }
+      .laest{
+        display: none;
+      }
+    }
 }
 
 </style>

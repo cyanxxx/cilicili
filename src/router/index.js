@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import Router from 'vue-router'
 import Main from '../view/Main'
 import SpColums from '../view/SpColums'

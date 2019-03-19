@@ -25,6 +25,9 @@ export default {
   right: 30px;
   bottom: 16px;
   cursor: pointer;
+  @media screen and (max-width: 414px){
+    right: 10px;
+  }
   .icon-58{
     font-weight: bold;
     font-size: 32px;

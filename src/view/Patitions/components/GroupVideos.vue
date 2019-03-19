@@ -63,6 +63,26 @@ export default {
         }
       }
     }
+    @media screen and (max-width: 414px){
+      .videoLink{
+        float: none;
+        display: block;
+        margin: 26px auto;
+        .overlay{
+          opacity: 1;
+          background: rgba(0,0,0,.7);
+          .title{
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            color:$theme-color;
+            font-weight: bold;
+          }
+        }
+      }
+     
+    }
   }
 }
 </style>

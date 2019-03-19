@@ -8,12 +8,12 @@
     <div class="clearFix">
 
       <!-- 专栏 -->
-      <sp-colum class="col-5 spcol" :lists="preSpItem">
+      <sp-colum class="col spcol" :lists="preSpItem">
         <h2>专栏</h2>
       </sp-colum>
 
       <!-- 直播 -->
-      <live class="col-5 live" :lists="liveItem">
+      <live class="col live" :lists="liveItem">
         <h2>直播</h2>
       </live>
     </div>
@@ -61,16 +61,21 @@
 .more{
   text-align: right;
 }
-.col-5{
+.col{
+  @media screen and (min-width: 1160px){
     float: left;
     width: 50%;
+    &.spcol{
+    padding-right:40px;
+    }
+    &.live{
+    padding-left:40px;
+    }
   }
-.spcol{
-  padding-right:40px;
-}
-.live{
-  padding-left:40px;
-}
+    width: 100%;
+    padding: 20px;
+  }
+
 h2{
     text-align: center;
 }
